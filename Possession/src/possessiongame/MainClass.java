@@ -21,7 +21,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 	private static Robot robot;
 	private NPC_test hb, hb2;
 	private Image image, currentSprite, character, characterDown,
-			characterJumped, background, heliboy;
+			characterJumped, background, heliboy, character_backwards, character_left, character_right;
 
 	public static Image tilegrassTop, tilegrassBot, tilegrassLeft,
 			tilegrassRight, tiledirt;
@@ -48,7 +48,11 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 		}
 
 		// Image Setups
-		character = getImage(base, "data/character.png");
+		character = getImage(base, "data/Char_forward.png");
+		character_backwards = getImage(base, "data/Char_backwards.png");
+		character_left = getImage(base, "data/Char_left.png");
+		character_right = getImage(base, "data/Char_right.png");
+		
 		characterDown = getImage(base, "data/down.png");
 		characterJumped = getImage(base, "data/jumped.png");
 		currentSprite = character;
@@ -139,7 +143,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 			if (robot.isJumped()) {
 				currentSprite = characterJumped;
 			} else if (robot.isJumped() == false && robot.isDucked() == false) {
-				currentSprite = character;
+				//currentSprite = character;
 			}
 			updateTiles();
 			hb.update();
@@ -185,8 +189,8 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 		g.drawImage(currentSprite, robot.getCenterX() - 61,
 				robot.getCenterY() - 63, this);
 
-		g.drawImage(heliboy, hb.getCenterX() - 48, hb.getCenterY() - 48, this);
-		g.drawImage(heliboy, hb2.getCenterX() - 48, hb2.getCenterY() - 48, this);
+	//	g.drawImage(heliboy, hb.getCenterX() - 48, hb.getCenterY() - 48, this);
+	//	g.drawImage(heliboy, hb2.getCenterX() - 48, hb2.getCenterY() - 48, this);
 
 	}
 
@@ -213,14 +217,18 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 	
 		case KeyEvent.VK_UP:
 			System.out.println("Move up");
+			currentSprite = character;
 			robot.moveUp();
 			robot.setMovingUp(true);
+			
 			break;
 
 		case KeyEvent.VK_DOWN:
 			System.out.println("Move down");
+			currentSprite = character_backwards;
 			robot.moveDown();
 			robot.setMovingDown(true);
+			
 			/*
 			currentSprite = characterDown;
 			if (robot.isJumped() == false) {
@@ -231,11 +239,15 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 			break;
 
 		case KeyEvent.VK_LEFT:
+			currentSprite = character_left;
+
 			robot.moveLeft();
 			robot.setMovingLeft(true);
 			break;
 
 		case KeyEvent.VK_RIGHT:
+			currentSprite = character_right;
+
 			robot.moveRight();
 			robot.setMovingRight(true);
 			break;

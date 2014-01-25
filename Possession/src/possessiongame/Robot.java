@@ -8,7 +8,6 @@ public class Robot {
 	// Constants are Here
 	final int JUMPSPEED = -15;
 	final int MOVESPEED = 2;
-	
 
 	// Robot can move this much away from center
 	final int offset = 60;
@@ -50,12 +49,12 @@ public class Robot {
 			centerX += speedX;
 		}
 		if (speedX > 0 && centerX > MainClass.SCREEN_WIDTH / 2 + offset) {
-			bg1.setSpeedX(-MOVESPEED );
-			bg2.setSpeedX(-MOVESPEED );
+			bg1.setSpeedX(-MOVESPEED);
+			bg2.setSpeedX(-MOVESPEED);
 		}
 		if (speedX < 0 && centerX < MainClass.SCREEN_WIDTH / 2 - offset) {
-			bg1.setSpeedX(+MOVESPEED );
-			bg2.setSpeedX(+MOVESPEED );
+			bg1.setSpeedX(+MOVESPEED);
+			bg2.setSpeedX(+MOVESPEED);
 		}
 
 		// Moves Character or Scrolls Background accordingly in y direction.

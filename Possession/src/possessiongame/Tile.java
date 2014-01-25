@@ -6,7 +6,7 @@ import java.awt.Rectangle;
 public class Tile {
 	
 	
-	private int tileX, tileY, speedX, speedY, type;
+	private int tileX, tileY, speedX, speedY, type, safeY;
 	public Image tileImage;
 
 	private Robot robot = MainClass.getRobot();
@@ -51,6 +51,8 @@ public class Tile {
 		if (r.intersects(Robot.yellowRed) && type != 0) {
 			checkVerticalCollision(Robot.rect, Robot.rect2);
 		//	checkSideCollision(Robot.rect, Robot.rect2);
+		}else{
+			safeY = robot.getCenterY();
 		}
 
 	}
@@ -82,10 +84,18 @@ public class Tile {
 	public void checkVerticalCollision(Rectangle rtop, Rectangle rbot) {
 		if (rtop.intersects(r)) {
 			System.out.println("upper collision");
+			robot.setCenterY(safeY + 1);
+			robot.setSpeedY(0);
+		}else{
+			safeY = robot.getCenterY();
 		}
 
 		if (rbot.intersects(r)) {
 			System.out.println("lower collision");
+			robot.setCenterY(safeY -1);
+			robot.setSpeedY(0);
+		}else{
+			safeY = robot.getCenterY();
 		}
 	}
 
