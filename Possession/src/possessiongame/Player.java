@@ -11,6 +11,7 @@ public class Player {
 
     private int centerX = 100;
     private int centerY = 377;
+    final int offset = 60;
 
     private boolean movingLeft = false;
     private boolean movingRight = false;
@@ -28,11 +29,27 @@ public class Player {
     public void update() {
 
         centerX += speedX;
-        
-
-        // check collision
 
         centerY += speedY;
+        
+        if (speedX == 0) {
+            bg.setSpeedX(0);
+        }
+        if (speedY == 0) {
+            bg.setSpeedX(0);
+        }
+        if (speedX > 0 && centerX > MainClass.SCREEN_WIDTH / 2 + offset) {
+            bg.setSpeedX(-MOVESPEED);
+        }
+        if (speedX < 0 && centerX < MainClass.SCREEN_WIDTH / 2 - offset) {
+            bg.setSpeedX(+MOVESPEED);
+        }
+        if (speedY > 0 && centerY > MainClass.SCREEN_HEIGHT / 2 + offset) {
+            bg.setSpeedY(-MOVESPEED);
+        }
+        if (speedY < 0 && centerY < MainClass.SCREEN_HEIGHT / 2 - offset) {
+            bg.setSpeedY(+MOVESPEED);
+        }
 
         rect.setRect(centerX, centerY, 27, 36);
     }
