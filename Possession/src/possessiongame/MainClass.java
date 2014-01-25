@@ -8,14 +8,21 @@ import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class MainClass extends Applet implements Runnable, KeyListener {
 
 	private Robot robot;
-	private Image image, currentSprite, character, characterDown, characterJumped, background;
+	private NPC_test hb, hb2;
+	private Image image, currentSprite, character, characterDown, characterJumped, background, heliboy;
+	
+	public static Image tiledirt, tileocean;
+	
 	private Graphics second;
 	private URL base;
 	private static Background bg1, bg2;
+	
+	private ArrayList<Tile> tilearray = new ArrayList<Tile>();
 
 	@Override
 	public void init() {
@@ -38,12 +45,36 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 		characterJumped = getImage(base, "data/jumped.png");
 		currentSprite = character;
 		background = getImage(base, "data/background.png");
+		heliboy = getImage(base, "data/heliboy.png");
+		
+		tiledirt = getImage(base, "data/tiledirt.png");
+		tileocean = getImage(base, "data/tileocean.png");
 	}
 
 	@Override
 	public void start() {
 		bg1 = new Background(0,0);
 		bg2 = new Background(2160, 0);
+		
+		// Initialize Tiles
+
+		for (int i = 0; i < 200; i++) {
+			for (int j = 0; j < 12; j++) {
+
+				if (j == 11) {
+					Tile t = new Tile(i, j, 2);
+					tilearray.add(t);
+
+				} if (j == 10) {
+					Tile t = new Tile(i, j, 1);
+					tilearray.add(t);
+
+				}
+			}
+		}
+		
+		hb = new NPC_test(340, 360);
+		hb2 = new NPC_test(700, 360);
 		robot = new Robot();
 
 
@@ -70,6 +101,9 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 			}else if (robot.isJumped() == false && robot.isDucked() == false){
 				currentSprite = character;
 			}
+			updateTiles();
+			hb.update();
+			hb2.update();
 			bg1.update();
 			bg2.update();
 			repaint();
@@ -101,8 +135,34 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 	public void paint(Graphics g) {
 		g.drawImage(background, bg1.getBgX(), bg1.getBgY(), this);
 		g.drawImage(background, bg2.getBgX(), bg2.getBgY(), this);
+		paintTiles(g);
+		
+		g.drawRect((int)robot.rect.getX(), (int)robot.rect.getY(), (int)robot.rect.getWidth(), (int)robot.rect.getHeight());
+		g.drawRect((int)robot.rect2.getX(), (int)robot.rect2.getY(), (int)robot.rect2.getWidth(), (int)robot.rect2.getHeight());
+		
 		g.drawImage(currentSprite, robot.getCenterX() - 61, robot.getCenterY() - 63, this);
+		
+		g.drawImage(heliboy, hb.getCenterX() - 48, hb.getCenterY() - 48, this);
+		g.drawImage(heliboy, hb2.getCenterX() - 48, hb2.getCenterY() - 48, this);
 
+	}
+	
+	private void updateTiles() {
+
+		for (int i = 0; i < tilearray.size(); i++) {
+			Tile t = (Tile) tilearray.get(i);
+			t.update();
+		}
+
+
+	}
+
+
+	private void paintTiles(Graphics g) {
+		for (int i = 0; i < tilearray.size(); i++) {
+			Tile t = (Tile) tilearray.get(i);
+			g.drawImage(t.getTileImage(), t.getTileX(), t.getTileY(), this);
+		}
 	}
 
 	@Override

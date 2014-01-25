@@ -1,6 +1,7 @@
 package possessiongame;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 public class Robot {
 
@@ -21,6 +22,10 @@ public class Robot {
 
     private int speedX = 0;
     private int speedY = 1;
+    
+    //For Collision Detection
+    public static Rectangle rect = new Rectangle(0, 0, 0, 0);
+    public static Rectangle rect2 = new Rectangle(0, 0, 0, 0);
 
     public void update() {
 
@@ -37,8 +42,8 @@ public class Robot {
             centerX += speedX;
         }
         if (speedX > 0 && centerX > 200){
-            bg1.setSpeedX(-MOVESPEED);
-            bg2.setSpeedX(-MOVESPEED);
+            bg1.setSpeedX(-MOVESPEED/5);
+            bg2.setSpeedX(-MOVESPEED/5);
         }
 
         // Updates Y Position
@@ -63,6 +68,9 @@ public class Robot {
         if (centerX + speedX <= 60) {
             centerX = 61;
         }
+        
+        rect.setRect(centerX - 34, centerY - 63, 68, 63);
+        rect2.setRect(rect.getX(), rect.getY() + 63, 68, 64);
     }
 
     public void moveRight() {
