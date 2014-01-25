@@ -5,8 +5,8 @@ import java.awt.Rectangle;
 public class NPC {
 
 	private int maxHealth, currentHealth, power, speedX, centerX, centerY;
-	private Background bg = MainClass.getBg1();
-	private Robot robot = MainClass.getRobot();
+	private Background bg = MainClass.getBg();
+	private Player player = MainClass.getPlayer();
 
 	public Rectangle r = new Rectangle(0, 0, 0, 0);
 
@@ -16,16 +16,16 @@ public class NPC {
 		speedX = bg.getSpeedX() * 5;
 		r.setBounds(centerX - 25, centerY - 25, 50, 60);
 
-		if (r.intersects(Robot.yellowRed)) {
+		if (r.intersects(Player.rect)) {
 			checkCollision();
 		}
 
 	}
 
 	private void checkCollision() {
-		if (r.intersects(Robot.rect) || r.intersects(Robot.rect2)) {
+		if (r.intersects(Player.rect)) {
 			System.out.println("collision");
-			robot.setSpeedX(0);
+			player.setSpeedX(0);
 
 		}
 	}

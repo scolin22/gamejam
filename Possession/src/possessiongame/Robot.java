@@ -1,4 +1,4 @@
-package possessiongame;
+/*package possessiongame;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -251,3 +251,4 @@ public class Robot {
 		this.movingDown = movingDown;
 	}
 }
+*/

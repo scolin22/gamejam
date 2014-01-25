@@ -9,8 +9,8 @@ public class Tile {
 	private int tileX, tileY, speedX, speedY, type, safeY;
 	public Image tileImage;
 
-	private Robot robot = MainClass.getRobot();
-	private Background bg = MainClass.getBg1();
+	private Player player = MainClass.getPlayer();
+	private Background bg = MainClass.getBg();
 	private Rectangle r;
 
 	public Tile(int x, int y, int typeInt) {
@@ -48,11 +48,10 @@ public class Tile {
 
 		r.setBounds(tileX, tileY, 40, 40);
 
-		if (r.intersects(Robot.yellowRed) && type != 0) {
-			checkVerticalCollision(Robot.rect, Robot.rect2);
-		//	checkSideCollision(Robot.rect, Robot.rect2);
-		}else{
-			safeY = robot.getCenterY();
+		if (r.intersects(Player.rect) && type != 0) {
+		    
+		} else {
+			safeY = player.getCenterY();
 		}
 
 	}
@@ -81,37 +80,13 @@ public class Tile {
 		this.tileImage = tileImage;
 	}
 
-	public void checkVerticalCollision(Rectangle rtop, Rectangle rbot) {
-		if (rtop.intersects(r)) {
-			System.out.println("upper collision");
-			robot.setCenterY(safeY + 1);
-			robot.setSpeedY(0);
-		}else{
-			safeY = robot.getCenterY();
-		}
-
-		if (rbot.intersects(r)) {
-			System.out.println("lower collision");
-			robot.setCenterY(safeY -1);
-			robot.setSpeedY(0);
-		}else{
-			safeY = robot.getCenterY();
-		}
-	}
-
-	public void checkSideCollision(Rectangle rtop, Rectangle rbot) {
-		if (type != 5 && type != 2 && type != 0) {
-			if (rtop.intersects(r)) {
-				robot.setCenterX(tileX + 102);
-
-				robot.setSpeedX(0);
-
-			} else if (rbot.intersects(r)) {
-				robot.setCenterX(tileX + 85);
-				robot.setSpeedX(0);
-			}
-
-			
+	public void checkCollision(Rectangle prect) {
+		if (prect.intersects(r)) {
+			System.out.println("collision");
+			player.setCenterY(safeY + 1);
+			player.setSpeedY(0);
+		} else {
+			safeY = player.getCenterY();
 		}
 	}
 

@@ -39,12 +39,12 @@ public class Player {
         if (speedX < 0 && centerX >= MainClass.SCREEN_WIDTH / 2 - offset) {
             centerX += speedX;
         }
-        if (speedX > 0 && centerX > MainClass.SCREEN_WIDTH / 2 + offset) {
+        /*if (speedX > 0 && centerX > MainClass.SCREEN_WIDTH / 2 + offset) {
             bg.setSpeedX(-MOVESPEED);
         }
         if (speedX < 0 && centerX < MainClass.SCREEN_WIDTH / 2 - offset) {
             bg.setSpeedX(+MOVESPEED);
-        }
+        }*/
 
         // Moves Character or Scrolls Background accordingly in y direction.
         if (speedY == 0) {
@@ -57,12 +57,12 @@ public class Player {
         if (speedY < 0 && centerY >= MainClass.SCREEN_HEIGHT / 2 - offset) {
             centerY += speedY;
         }
-        if (speedY > 0 && centerY > MainClass.SCREEN_HEIGHT / 2 + offset) {
+        /*if (speedY > 0 && centerY > MainClass.SCREEN_HEIGHT / 2 + offset) {
             bg.setSpeedY(-MOVESPEED);
         }
         if (speedY < 0 && centerY < MainClass.SCREEN_HEIGHT / 2 - offset) {
             bg.setSpeedY(+MOVESPEED);
-        }
+        }*/
 
         // Prevents going beyond X coordinate of 0
         if (centerX + speedX <= 60) {
