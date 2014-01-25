@@ -1,4 +1,3 @@
-
 package possessiongame;
 
 import java.awt.Graphics;
