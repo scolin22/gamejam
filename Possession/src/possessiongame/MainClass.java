@@ -20,7 +20,6 @@ public class MainClass extends Applet implements Runnable, KeyListener {
     public final static int SCREEN_HEIGHT = 480;
 
     private static Player player;
-    private NPC_test hb, hb2;
     private Image image, currentSprite, character, background, character_backwards,
             character_left, character_right;
 
@@ -76,9 +75,6 @@ public class MainClass extends Applet implements Runnable, KeyListener {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
-        //hb = new NPC_test(340, 360);
-        //hb2 = new NPC_test(700, 360);
 
         Thread thread = new Thread(this);
         thread.start();
@@ -139,8 +135,6 @@ public class MainClass extends Applet implements Runnable, KeyListener {
             currentSprite = character;
             
             updateTiles();
-            hb.update();
-            hb2.update();
             bg.update();
             repaint();
             try {
@@ -177,12 +171,6 @@ public class MainClass extends Applet implements Runnable, KeyListener {
         
         g.drawImage(currentSprite, player.getCenterX() - 61,
                 player.getCenterY() - 63, this);
-
-        // g.drawImage(heliboy, hb.getCenterX() - 48, hb.getCenterY() - 48,
-        // this);
-        // g.drawImage(heliboy, hb2.getCenterX() - 48, hb2.getCenterY() - 48,
-        // this);
-
     }
 
     private void updateTiles() {
