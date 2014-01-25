@@ -169,8 +169,8 @@ public class MainClass extends Applet implements Runnable, KeyListener {
         g.drawRect((int) player.rect.getX(), (int) player.rect.getY(),
                 (int) player.rect.getWidth(), (int) player.rect.getHeight());
         
-        g.drawImage(currentSprite, player.getCenterX() - 61,
-                player.getCenterY() - 63, this);
+        g.drawImage(currentSprite, player.getCenterX(),
+                player.getCenterY(), this);
     }
 
     private void updateTiles() {
