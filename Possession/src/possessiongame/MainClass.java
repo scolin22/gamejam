@@ -16,6 +16,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
     private Image image, character;
 	private Graphics second;
 	private URL base;
+	private static Background bg1, bg2;
 	
 	private Robot robot; //ADDED
 
