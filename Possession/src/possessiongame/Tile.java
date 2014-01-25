@@ -15,11 +15,18 @@ public class Tile {
 
 		type = typeInt;
 
-		if (type == 1) {
-			tileImage = MainClass.tileocean;
-		} else if (type == 2) {
-
+		if (type == 5) {
 			tileImage = MainClass.tiledirt;
+		} else if (type == 8) {
+			tileImage = MainClass.tilegrassTop;
+		} else if (type == 4) {
+			tileImage = MainClass.tilegrassLeft;
+
+		} else if (type == 6) {
+			tileImage = MainClass.tilegrassRight;
+
+		} else if (type == 2) {
+			tileImage = MainClass.tilegrassBot;
 		}
 
 	}

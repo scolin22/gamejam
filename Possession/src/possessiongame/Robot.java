@@ -8,10 +8,10 @@ public class Robot {
     // Constants are Here
     final int JUMPSPEED = -15;
     final int MOVESPEED = 5;
-    final int GROUND = 382;
     
     private int centerX = 100;
-    private int centerY = GROUND;
+    private int centerY = 377;
+    
     private boolean jumped = false;
     private boolean movingLeft = false;
     private boolean movingRight = false;
@@ -21,7 +21,7 @@ public class Robot {
     private static Background bg2 = MainClass.getBg2();
 
     private int speedX = 0;
-    private int speedY = 1;
+    private int speedY = 0;
     
     //For Collision Detection
     public static Rectangle rect = new Rectangle(0, 0, 0, 0);
@@ -48,19 +48,11 @@ public class Robot {
 
         // Updates Y Position
         centerY += speedY;
-        if (centerY + speedY >= GROUND) {
-            centerY = GROUND;
-        }
+        
 
         // Handles Jumping
         if (jumped == true) {
             speedY += 1;
-
-            if (centerY + speedY >= GROUND) {
-                centerY = GROUND;
-                speedY = 0;
-                jumped = false;
-            }
 
         }
 

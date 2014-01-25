@@ -7,6 +7,9 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -14,14 +17,16 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 
 	private Robot robot;
 	private NPC_test hb, hb2;
-	private Image image, currentSprite, character, characterDown, characterJumped, background, heliboy;
-	
-	public static Image tiledirt, tileocean;
-	
+	private Image image, currentSprite, character, characterDown,
+			characterJumped, background, heliboy;
+
+	public static Image tilegrassTop, tilegrassBot, tilegrassLeft,
+			tilegrassRight, tiledirt;
+
 	private Graphics second;
 	private URL base;
 	private static Background bg1, bg2;
-	
+
 	private ArrayList<Tile> tilearray = new ArrayList<Tile>();
 
 	@Override
@@ -46,40 +51,71 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 		currentSprite = character;
 		background = getImage(base, "data/background.png");
 		heliboy = getImage(base, "data/heliboy.png");
-		
+
 		tiledirt = getImage(base, "data/tiledirt.png");
-		tileocean = getImage(base, "data/tileocean.png");
+		tilegrassTop = getImage(base, "data/tilegrasstop.png");
+		tilegrassBot = getImage(base, "data/tilegrassbot.png");
+		tilegrassLeft = getImage(base, "data/tilegrassleft.png");
+		tilegrassRight = getImage(base, "data/tilegrassright.png");
 	}
 
 	@Override
 	public void start() {
-		bg1 = new Background(0,0);
+		bg1 = new Background(0, 0);
 		bg2 = new Background(2160, 0);
-		
+
 		// Initialize Tiles
-
-		for (int i = 0; i < 200; i++) {
-			for (int j = 0; j < 12; j++) {
-
-				if (j == 11) {
-					Tile t = new Tile(i, j, 2);
-					tilearray.add(t);
-
-				} if (j == 10) {
-					Tile t = new Tile(i, j, 1);
-					tilearray.add(t);
-
-				}
-			}
+		try {
+			loadMap("data/map1.txt");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
+
 		hb = new NPC_test(340, 360);
 		hb2 = new NPC_test(700, 360);
 		robot = new Robot();
 
-
 		Thread thread = new Thread(this);
 		thread.start();
+	}
+
+	private void loadMap(String filename) throws IOException {
+		ArrayList lines = new ArrayList();
+		int width = 0;
+		int height = 0;
+
+		BufferedReader reader = new BufferedReader(new FileReader(filename));
+		while (true) {
+			String line = reader.readLine();
+			// no more lines to read
+			if (line == null) {
+				reader.close();
+				break;
+			}
+
+			if (!line.startsWith("!")) {
+				lines.add(line);
+				width = Math.max(width, line.length());
+
+			}
+		}
+		height = lines.size();
+
+		for (int j = 0; j < 12; j++) {
+			String line = (String) lines.get(j);
+			for (int i = 0; i < width; i++) {
+				System.out.println(i + "is i ");
+
+				if (i < line.length()) {
+					char ch = line.charAt(i);
+					Tile t = new Tile(i, j, Character.getNumericValue(ch));
+					tilearray.add(t);
+				}
+
+			}
+		}
+
 	}
 
 	@Override
@@ -96,9 +132,9 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 	public void run() {
 		while (true) {
 			robot.update();
-			if (robot.isJumped()){
+			if (robot.isJumped()) {
 				currentSprite = characterJumped;
-			}else if (robot.isJumped() == false && robot.isDucked() == false){
+			} else if (robot.isJumped() == false && robot.isDucked() == false) {
 				currentSprite = character;
 			}
 			updateTiles();
@@ -136,17 +172,20 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 		g.drawImage(background, bg1.getBgX(), bg1.getBgY(), this);
 		g.drawImage(background, bg2.getBgX(), bg2.getBgY(), this);
 		paintTiles(g);
-		
-		g.drawRect((int)robot.rect.getX(), (int)robot.rect.getY(), (int)robot.rect.getWidth(), (int)robot.rect.getHeight());
-		g.drawRect((int)robot.rect2.getX(), (int)robot.rect2.getY(), (int)robot.rect2.getWidth(), (int)robot.rect2.getHeight());
-		
-		g.drawImage(currentSprite, robot.getCenterX() - 61, robot.getCenterY() - 63, this);
-		
+
+		g.drawRect((int) robot.rect.getX(), (int) robot.rect.getY(),
+				(int) robot.rect.getWidth(), (int) robot.rect.getHeight());
+		g.drawRect((int) robot.rect2.getX(), (int) robot.rect2.getY(),
+				(int) robot.rect2.getWidth(), (int) robot.rect2.getHeight());
+
+		g.drawImage(currentSprite, robot.getCenterX() - 61,
+				robot.getCenterY() - 63, this);
+
 		g.drawImage(heliboy, hb.getCenterX() - 48, hb.getCenterY() - 48, this);
 		g.drawImage(heliboy, hb2.getCenterX() - 48, hb2.getCenterY() - 48, this);
 
 	}
-	
+
 	private void updateTiles() {
 
 		for (int i = 0; i < tilearray.size(); i++) {
@@ -154,9 +193,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 			t.update();
 		}
 
-
 	}
-
 
 	private void paintTiles(Graphics g) {
 		for (int i = 0; i < tilearray.size(); i++) {
@@ -175,7 +212,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 
 		case KeyEvent.VK_DOWN:
 			currentSprite = characterDown;
-			if (robot.isJumped() == false){
+			if (robot.isJumped() == false) {
 				robot.setDucked(true);
 				robot.setSpeedX(0);
 			}
@@ -239,8 +276,5 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 	public static Background getBg2() {
 		return bg2;
 	}
-
-
-	
 
 }
