@@ -6,7 +6,7 @@ import java.awt.Rectangle;
 public class Tile {
 	
 	
-	private int tileX, tileY, speedX, speedY, type, safeY;
+	private int tileX, tileY, speedX, speedY, type, safeY, safeX;
 	public Image tileImage;
 
 	private Player player = MainClass.getPlayer();
@@ -48,11 +48,13 @@ public class Tile {
 
 		r.setBounds(tileX, tileY, 40, 40);
 
-		/*if (r.intersects(Player.rect) && type != 0) {
-		    
+		if (r.intersects(Player.rect) && type != 0) {
+		    player.setCenterX(safeX);
+		    player.setCenterY(safeY);
 		} else {
 			safeY = player.getCenterY();
-		}*/
+			safeX = player.getCenterX();
+		}
 
 	}
 
