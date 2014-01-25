@@ -4,8 +4,9 @@ import java.awt.Image;
 import java.awt.Rectangle;
 
 public class Tile {
-
-	private int tileX, tileY, speedX, type;
+	
+	
+	private int tileX, tileY, speedX, speedY, type;
 	public Image tileImage;
 
 	private Robot robot = MainClass.getRobot();
@@ -39,8 +40,11 @@ public class Tile {
 	}
 
 	public void update() {
-		speedX = bg.getSpeedX() * 5;
+		speedX = bg.getSpeedX();
+		speedY = bg.getSpeedY();
+		
 		tileX += speedX;
+		tileY += speedY;
 
 		r.setBounds(tileX, tileY, 40, 40);
 

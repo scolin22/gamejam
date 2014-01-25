@@ -52,7 +52,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 		characterDown = getImage(base, "data/down.png");
 		characterJumped = getImage(base, "data/jumped.png");
 		currentSprite = character;
-		background = getImage(base, "data/background.png");
+		background = getImage(base, "data/background2.jpg");
 		heliboy = getImage(base, "data/heliboy.png");
 
 		tiledirt = getImage(base, "data/tiledirt.png");
