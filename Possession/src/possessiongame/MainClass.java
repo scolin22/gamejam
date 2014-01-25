@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class MainClass extends Applet implements Runnable, KeyListener {
 
-	private Robot robot;
+	private static Robot robot;
 	private NPC_test hb, hb2;
 	private Image image, currentSprite, character, characterDown,
 			characterJumped, background, heliboy;
@@ -63,6 +63,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 	public void start() {
 		bg1 = new Background(0, 0);
 		bg2 = new Background(2160, 0);
+		robot = new Robot();
 
 		// Initialize Tiles
 		try {
@@ -74,7 +75,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 
 		hb = new NPC_test(340, 360);
 		hb2 = new NPC_test(700, 360);
-		robot = new Robot();
+		
 
 		Thread thread = new Thread(this);
 		thread.start();
@@ -275,6 +276,10 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 
 	public static Background getBg2() {
 		return bg2;
+	}
+	
+	public static Robot getRobot(){
+		return robot;
 	}
 
 }
