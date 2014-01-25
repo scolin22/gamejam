@@ -26,6 +26,8 @@ public class Robot {
     //For Collision Detection
     public static Rectangle rect = new Rectangle(0, 0, 0, 0);
     public static Rectangle rect2 = new Rectangle(0, 0, 0, 0);
+    //Rectangle to limit Collision checking area
+    public static Rectangle yellowRed = new Rectangle(0, 0, 0, 0);
 
     public void update() {
 
@@ -53,7 +55,11 @@ public class Robot {
         // Handles Jumping
         if (jumped == true) {
             speedY += 1;
-
+            
+            if(speedY>3){
+            	jumped = true;
+            }
+            	
         }
 
         // Prevents going beyond X coordinate of 0
@@ -63,6 +69,7 @@ public class Robot {
         
         rect.setRect(centerX - 34, centerY - 63, 68, 63);
         rect2.setRect(rect.getX(), rect.getY() + 63, 68, 64);
+        yellowRed.setRect(centerX - 110, centerY - 110, 180, 180);
     }
 
     public void moveRight() {
