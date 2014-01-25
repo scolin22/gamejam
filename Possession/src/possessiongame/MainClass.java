@@ -77,8 +77,8 @@ public class MainClass extends Applet implements Runnable, KeyListener {
             e.printStackTrace();
         }
 
-        hb = new NPC_test(340, 360);
-        hb2 = new NPC_test(700, 360);
+        //hb = new NPC_test(340, 360);
+        //hb2 = new NPC_test(700, 360);
 
         Thread thread = new Thread(this);
         thread.start();
@@ -204,30 +204,22 @@ public class MainClass extends Applet implements Runnable, KeyListener {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_UP:
                 currentSprite = character;
-                player.moveUp();
-                player.setMovingUp(true);
+                player.startUp();
                 break;
 
             case KeyEvent.VK_DOWN:
                 currentSprite = character_backwards;
-                player.moveDown();
-                player.setMovingDown(true);
-                /*
-                 * currentSprite = characterDown; if (player.isJumped() == false)
-                 * { player.setDucked(true); player.setSpeedX(0); }
-                 */
+                player.startDown();
                 break;
 
             case KeyEvent.VK_LEFT:
                 currentSprite = character_left;
-                player.moveLeft();
-                player.setMovingLeft(true);
+                player.startLeft();
                 break;
 
             case KeyEvent.VK_RIGHT:
                 currentSprite = character_right;
-                player.moveRight();
-                player.setMovingRight(true);
+                player.startRight();
                 break;
 
             case KeyEvent.VK_SPACE:

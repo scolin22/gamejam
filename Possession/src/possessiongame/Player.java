@@ -9,7 +9,7 @@ public class Player {
     final int MOVESPEED = 2;
 
     // Robot can move this much away from center
-    final int offset = 60;
+    final int offset = 0;
 
     private int centerX = 100;
     private int centerY = 377;
@@ -29,8 +29,14 @@ public class Player {
 
     public void update() {
 
+        centerX += speedX;
+        
+        //check collision
+        
+        centerY += speedY;
+        
         // Moves Character or Scrolls Background accordingly in x direction.
-        if (speedX == 0) {
+        /*if (speedX == 0) {
             bg.setSpeedX(0);
         }
         if (speedX > 0 && centerX <= MainClass.SCREEN_WIDTH / 2 + offset) {
@@ -39,7 +45,7 @@ public class Player {
         if (speedX < 0 && centerX >= MainClass.SCREEN_WIDTH / 2 - offset) {
             centerX += speedX;
         }
-        /*if (speedX > 0 && centerX > MainClass.SCREEN_WIDTH / 2 + offset) {
+        if (speedX > 0 && centerX > MainClass.SCREEN_WIDTH / 2 + offset) {
             bg.setSpeedX(-MOVESPEED);
         }
         if (speedX < 0 && centerX < MainClass.SCREEN_WIDTH / 2 - offset) {
@@ -47,9 +53,8 @@ public class Player {
         }*/
 
         // Moves Character or Scrolls Background accordingly in y direction.
-        if (speedY == 0) {
+        /*if (speedY == 0) {
             bg.setSpeedY(0);
-
         }
         if (speedY > 0 && centerY <= MainClass.SCREEN_HEIGHT / 2 + offset) {
             centerY += speedY;
@@ -65,75 +70,45 @@ public class Player {
         }*/
 
         // Prevents going beyond X coordinate of 0
-        if (centerX + speedX <= 60) {
+        /*if (centerX + speedX <= 60) {
             centerX = 61;
-        }
+        }*/
 
         rect.setRect(centerX - 34, centerY - 63, 68, 63);
     }
 
-    public void moveUp() {
-        speedY = -MOVESPEED;
-    }
-
-    public void moveDown() {
-        speedY = MOVESPEED;
-    }
-
-    public void moveRight() {
-        speedX = MOVESPEED;
-    }
-
-    public void moveLeft() {
-        speedX = -MOVESPEED;
-    }
-
     public void stopUp() {
-        setMovingUp(false);
-        stop();
+        speedY -= MOVESPEED;
     }
 
     public void stopDown() {
-        setMovingDown(false);
-        stop();
+        speedY += MOVESPEED;
     }
 
     public void stopRight() {
-        setMovingRight(false);
-        stop();
+        speedX -= MOVESPEED;
     }
 
     public void stopLeft() {
-        setMovingLeft(false);
-        stop();
+        speedX += MOVESPEED;
+    }
+    
+    public void startUp() {
+        speedY -= MOVESPEED;
     }
 
-    private void stop() {
-        if (isMovingRight() == false && isMovingLeft() == false) {
-            speedX = 0;
-        }
-
-        if (isMovingRight() == false && isMovingLeft() == true) {
-            moveLeft();
-        }
-
-        if (isMovingRight() == true && isMovingLeft() == false) {
-            moveRight();
-        }
-
-        if (isMovingUp() == false && isMovingDown() == false) {
-            speedY = 0;
-        }
-
-        if (isMovingUp() == false && isMovingDown() == true) {
-            moveLeft();
-        }
-
-        if (isMovingUp() == true && isMovingDown() == false) {
-            moveRight();
-        }
+    public void startDown() {
+        speedY += MOVESPEED;
     }
 
+    public void startRight() {
+        speedX += MOVESPEED;
+    }
+
+    public void startLeft() {
+        speedX -= MOVESPEED;
+    }
+    
     public int getCenterX() {
         return centerX;
     }
@@ -164,37 +139,5 @@ public class Player {
 
     public void setSpeedY(int speedY) {
         this.speedY = speedY;
-    }
-
-    public boolean isMovingRight() {
-        return movingRight;
-    }
-
-    public void setMovingRight(boolean movingRight) {
-        this.movingRight = movingRight;
-    }
-
-    public boolean isMovingLeft() {
-        return movingLeft;
-    }
-
-    public void setMovingLeft(boolean movingLeft) {
-        this.movingLeft = movingLeft;
-    }
-
-    public boolean isMovingUp() {
-        return movingUp;
-    }
-
-    public boolean isMovingDown() {
-        return movingDown;
-    }
-
-    public void setMovingUp(boolean movingUp) {
-        this.movingUp = movingUp;
-    }
-
-    public void setMovingDown(boolean movingDown) {
-        this.movingDown = movingDown;
     }
 }

@@ -48,11 +48,11 @@ public class Tile {
 
 		r.setBounds(tileX, tileY, 40, 40);
 
-		if (r.intersects(Player.rect) && type != 0) {
+		/*if (r.intersects(Player.rect) && type != 0) {
 		    
 		} else {
 			safeY = player.getCenterY();
-		}
+		}*/
 
 	}
 
