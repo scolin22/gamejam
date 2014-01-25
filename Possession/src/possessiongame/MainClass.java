@@ -8,11 +8,17 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
+
+import possessiongame.framework.Animation;
 
 public class MainClass extends Applet implements Runnable, KeyListener {
 
@@ -21,10 +27,14 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 
     private static Player player;
     private Image image, currentSprite, character, background, character_backwards,
-            character_left, character_right;
+            	  character_left, character_right, character2, character_backwards2,
+            	  character_left2, character_right2, character3, character_backwards3,
+            	  character_left3, character_right3;
 
     public static Image tilegrassTop, tilegrassBot, tilegrassLeft,
             tilegrassRight, tiledirt;
+    
+    private Animation charAnim, char_backwardsAnim, char_leftAnim, char_rightAnim;
 
     private Graphics second;
     private URL base;
@@ -40,7 +50,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
         setFocusable(true);
         addKeyListener(this);
         Frame frame = (Frame) this.getParent().getParent();
-        frame.setTitle("The Game");
+        frame.setTitle("Possession");
         try {
             base = getDocumentBase();
         } catch (Exception e) {
@@ -48,10 +58,30 @@ public class MainClass extends Applet implements Runnable, KeyListener {
         }
 
         // Image Setups
-        character = getImage(base, "data/Char_forward.png");
-        character_backwards = getImage(base, "data/Char_backwards.png");
-        character_left = getImage(base, "data/Char_left.png");
-        character_right = getImage(base, "data/Char_right.png");
+        BufferedImage bigImg = null;
+		try {
+			bigImg = ImageIO.read(new File("data/TrainerSpriteSheet.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	     // The above line throws an checked IOException which must be caught.
+		
+		character_backwards = bigImg.getSubimage( 0, 0, 14, 19 );
+		character_backwards2 = bigImg.getSubimage( 14, 0, 15, 19 );
+		character_backwards3 = bigImg.getSubimage( 29, 0, 15, 19 );
+		
+		character_left = bigImg.getSubimage( 44, 0, 14, 19 );
+		character_left2 = bigImg.getSubimage( 58, 0, 14, 19 );
+		character_left3 = bigImg.getSubimage( 72, 0, 14, 19 );
+		
+		character = bigImg.getSubimage( 86, 0, 14, 19 );
+		character2 = bigImg.getSubimage( 100, 0, 14, 19 );
+		character3 = bigImg.getSubimage( 114, 0, 14, 19 );
+		
+		character_right = bigImg.getSubimage( 128, 0, 14, 19 );
+		character_right2 = bigImg.getSubimage( 142, 0, 14, 19 );
+		character_right3 = bigImg.getSubimage( 156, 0, 14, 19 );
 
         currentSprite = character;
         background = getImage(base, "data/background2.jpg");
@@ -61,6 +91,33 @@ public class MainClass extends Applet implements Runnable, KeyListener {
         tilegrassBot = getImage(base, "data/tilegrassbot.png");
         tilegrassLeft = getImage(base, "data/tilegrassleft.png");
         tilegrassRight = getImage(base, "data/tilegrassright.png");
+        
+        
+        charAnim = new Animation();
+        charAnim.addFrame(character, 75);
+        charAnim.addFrame(character2, 75);
+        charAnim.addFrame(character, 75);
+        charAnim.addFrame(character3, 75);
+		
+        char_rightAnim = new Animation();
+        char_rightAnim.addFrame(character_right, 75);
+        char_rightAnim.addFrame(character_right2, 75);
+        char_rightAnim.addFrame(character_right, 75);
+        char_rightAnim.addFrame(character_right3, 75);
+        
+        char_backwardsAnim = new Animation();
+        char_backwardsAnim.addFrame(character_backwards, 75);
+        char_backwardsAnim.addFrame(character_backwards2, 75);
+        char_backwardsAnim.addFrame(character_backwards, 75);
+        char_backwardsAnim.addFrame(character_backwards3, 75);
+        
+        char_leftAnim = new Animation();
+        char_leftAnim.addFrame(character_left, 75);
+        char_leftAnim.addFrame(character_left2, 75);
+        char_leftAnim.addFrame(character_left, 75);
+        char_leftAnim.addFrame(character_left3, 75);
+		
+		currentSprite = charAnim.getImage();
     }
 
     @Override
@@ -132,10 +189,10 @@ public class MainClass extends Applet implements Runnable, KeyListener {
     public void run() {
         while (true) {
             player.update();
-            currentSprite = character;
             
             updateTiles();
             bg.update();
+            animate();
             repaint();
             try {
                 Thread.sleep(17);
@@ -144,7 +201,14 @@ public class MainClass extends Applet implements Runnable, KeyListener {
             }
         }
     }
-
+    
+    public void animate() {
+		charAnim.update(10);
+		char_leftAnim.update(10);
+		char_rightAnim.update(10);
+		char_backwardsAnim.update(10);
+	}
+    
     @Override
     public void update(Graphics g) {
         if (image == null) {
@@ -191,22 +255,22 @@ public class MainClass extends Applet implements Runnable, KeyListener {
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_UP:
-                currentSprite = character;
+                currentSprite = charAnim.getImage();
                 player.startUp();
                 break;
 
             case KeyEvent.VK_DOWN:
-                currentSprite = character_backwards;
+                currentSprite = char_backwardsAnim.getImage();
                 player.startDown();
                 break;
 
             case KeyEvent.VK_LEFT:
-                currentSprite = character_left;
+                currentSprite = char_leftAnim.getImage();
                 player.startLeft();
                 break;
 
             case KeyEvent.VK_RIGHT:
-                currentSprite = character_right;
+                currentSprite = char_rightAnim.getImage();
                 player.startRight();
                 break;
 
