@@ -14,6 +14,9 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class MainClass extends Applet implements Runnable, KeyListener {
+	
+	public final static int SCREEN_WIDTH = 800;
+    public final static int SCREEN_HEIGHT = 480;
 
 	private static Robot robot;
 	private NPC_test hb, hb2;
@@ -32,7 +35,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 	@Override
 	public void init() {
 
-		setSize(800, 480);
+		setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 		setBackground(Color.BLACK);
 		setFocusable(true);
 		addKeyListener(this);
@@ -207,16 +210,24 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 	public void keyPressed(KeyEvent e) {
 
 		switch (e.getKeyCode()) {
+	
 		case KeyEvent.VK_UP:
 			System.out.println("Move up");
+			robot.moveUp();
+			robot.setMovingUp(true);
 			break;
 
 		case KeyEvent.VK_DOWN:
+			System.out.println("Move down");
+			robot.moveDown();
+			robot.setMovingDown(true);
+			/*
 			currentSprite = characterDown;
 			if (robot.isJumped() == false) {
 				robot.setDucked(true);
 				robot.setSpeedX(0);
 			}
+			*/
 			break;
 
 		case KeyEvent.VK_LEFT:
@@ -242,11 +253,12 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_UP:
 			System.out.println("Stop moving up");
+			robot.stopUp();
 			break;
 
 		case KeyEvent.VK_DOWN:
-			currentSprite = character;
-			robot.setDucked(false);
+			//currentSprite = character;
+			robot.stopDown();
 			break;
 
 		case KeyEvent.VK_LEFT:

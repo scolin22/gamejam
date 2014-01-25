@@ -6,6 +6,7 @@ public class NPC {
 
 	private int maxHealth, currentHealth, power, speedX, centerX, centerY;
 	private Background bg = MainClass.getBg1();
+	private Robot robot = MainClass.getRobot();
 
 	public Rectangle r = new Rectangle(0, 0, 0, 0);
 
@@ -24,6 +25,7 @@ public class NPC {
 	private void checkCollision() {
 		if (r.intersects(Robot.rect) || r.intersects(Robot.rect2)) {
 			System.out.println("collision");
+			robot.setSpeedX(0);
 
 		}
 	}
