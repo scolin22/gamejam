@@ -3,114 +3,176 @@ package possessiongame;
 import java.awt.Graphics;
 
 public class Robot {
-	// In Java, Class Variables should be private so that only its methods can
-	// change them.
-	private int centerX = 100;
-	private int centerY = 382;
-	private boolean jumped = false;
 
-	private int speedX = 0;
-	private int speedY = 1;
+    // Constants are Here
+    final int JUMPSPEED = -15;
+    final int MOVESPEED = 5;
+    final int GROUND = 382;
+    
+    private int centerX = 100;
+    private int centerY = GROUND;
+    private boolean jumped = false;
+    private boolean movingLeft = false;
+    private boolean movingRight = false;
+    private boolean ducked = false;
 
-	public int getCenterX() {
-		return centerX;
-	}
+        private static Background bg1 = MainClass.getBg1();                 
+        private static Background bg2 = MainClass.getBg2();
 
-	public int getCenterY() {
-		return centerY;
-	}
+    private int speedX = 0;
+    private int speedY = 1;
 
-	public boolean isJumped() {
-		return jumped;
-	}
+    public void update() {
 
-	public int getSpeedX() {
-		return speedX;
-	}
+        // Moves Character or Scrolls Background accordingly.
+        if (speedX < 0) {
+            centerX += speedX;
+        }
+        if (speedX == 0 || speedX < 0) {
+            bg1.setSpeedX(0);
+            bg2.setSpeedX(0);
 
-	public int getSpeedY() {
-		return speedY;
-	}
+        }
+        if (centerX <= 200 && speedX > 0) {
+            centerX += speedX;
+        }
+        if (speedX > 0 && centerX > 200){
+            bg1.setSpeedX(-MOVESPEED);
+            bg2.setSpeedX(-MOVESPEED);
+        }
 
-	public void setCenterX(int centerX) {
-		this.centerX = centerX;
-	}
+        // Updates Y Position
+        centerY += speedY;
+        if (centerY + speedY >= GROUND) {
+            centerY = GROUND;
+        }
 
-	public void setCenterY(int centerY) {
-		this.centerY = centerY;
-	}
+        // Handles Jumping
+        if (jumped == true) {
+            speedY += 1;
 
-	public void setJumped(boolean jumped) {
-		this.jumped = jumped;
-	}
+            if (centerY + speedY >= GROUND) {
+                centerY = GROUND;
+                speedY = 0;
+                jumped = false;
+            }
 
-	public void setSpeedX(int speedX) {
-		this.speedX = speedX;
-	}
+        }
 
-	public void setSpeedY(int speedY) {
-		this.speedY = speedY;
-	}
+        // Prevents going beyond X coordinate of 0
+        if (centerX + speedX <= 60) {
+            centerX = 61;
+        }
+    }
 
-	public void update() {
+    public void moveRight() {
+        if (ducked == false) {
+            speedX = MOVESPEED;
+        }
+    }
 
-		// Moves Character or Scrolls Background accordingly.
-		if (speedX < 0) {
-			centerX += speedX;
-		} else if (speedX == 0) {
-			System.out.println("Do not scroll the background.");
+    public void moveLeft() {
+        if (ducked == false) {
+            speedX = -MOVESPEED;
+        }
+    }
 
-		} else {
-			if (centerX <= 150) {
-				centerX += speedX;
-			} else {
-				System.out.println("Scroll Background Here");
-			}
-		}
+    public void stopRight() {
+        setMovingRight(false);
+        stop();
+    }
 
-		// Updates Y Position
+    public void stopLeft() {
+        setMovingLeft(false);
+        stop();
+    }
 
-		if (centerY + speedY >= 382) {
-			centerY = 382;
-		} else {
-			centerY += speedY;
-		}
+    private void stop() {
+        if (isMovingRight() == false && isMovingLeft() == false) {
+            speedX = 0;
+        }
 
-		// Handles Jumping
-		if (jumped == true) {
-			speedY += 1;
+        if (isMovingRight() == false && isMovingLeft() == true) {
+            moveLeft();
+        }
 
-			if (centerY + speedY >= 382) {
-				centerY = 382;
-				speedY = 0;
-				jumped = false;
-			}
+        if (isMovingRight() == true && isMovingLeft() == false) {
+            moveRight();
+        }
 
-		}
+    }
 
-		// Prevents going beyond X coordinate of 0
-		if (centerX + speedX <= 60) {
-			centerX = 61;
-		}
-	}
+    public void jump() {
+        if (jumped == false) {
+            speedY = JUMPSPEED;
+            jumped = true;
+        }
 
-	public void moveRight() {
-		speedX = 6;
-	}
+    }
 
-	public void moveLeft() {
-		speedX = -6;
-	}
+    public int getCenterX() {
+        return centerX;
+    }
 
-	public void stop() {
-		speedX = 0;
-	}
+    public int getCenterY() {
+        return centerY;
+    }
 
-	public void jump() {
-		if (jumped == false) {
-			speedY = -15;
-			jumped = true;
-		}
+    public boolean isJumped() {
+        return jumped;
+    }
 
-	}
+    public int getSpeedX() {
+        return speedX;
+    }
+
+    public int getSpeedY() {
+        return speedY;
+    }
+
+    public void setCenterX(int centerX) {
+        this.centerX = centerX;
+    }
+
+    public void setCenterY(int centerY) {
+        this.centerY = centerY;
+    }
+
+    public void setJumped(boolean jumped) {
+        this.jumped = jumped;
+    }
+
+    public void setSpeedX(int speedX) {
+        this.speedX = speedX;
+    }
+
+    public void setSpeedY(int speedY) {
+        this.speedY = speedY;
+    }
+
+    public boolean isDucked() {
+        return ducked;
+    }
+
+    public void setDucked(boolean ducked) {
+        this.ducked = ducked;
+    }
+
+    public boolean isMovingRight() {
+        return movingRight;
+    }
+
+    public void setMovingRight(boolean movingRight) {
+        this.movingRight = movingRight;
+    }
+
+    public boolean isMovingLeft() {
+        return movingLeft;
+    }
+
+    public void setMovingLeft(boolean movingLeft) {
+        this.movingLeft = movingLeft;
+    }
+
 }
+ 
