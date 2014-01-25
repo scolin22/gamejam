@@ -16,8 +16,8 @@ public class Robot {
     private boolean movingRight = false;
     private boolean ducked = false;
 
-        private static Background bg1 = MainClass.getBg1();                 
-        private static Background bg2 = MainClass.getBg2();
+    private static Background bg1 = MainClass.getBg1();                 
+    private static Background bg2 = MainClass.getBg2();
 
     private int speedX = 0;
     private int speedY = 1;
