@@ -1,10 +1,12 @@
 
 package possessiongame;
 
+import possessiongame.framework.Animation;
+
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
-
-import possessiongame.framework.Animation;
+import java.util.ArrayList;
 
 public class Person {
 
@@ -41,6 +43,8 @@ public class Person {
     private Animation frontAnim, backAnim, leftAnim, rightAnim;
 
     private int paranoia;
+    
+    private ArrayList<String> inventory = new ArrayList<String>();
 
     public Person(Image front, Image front2, Image front3,
             Image back, Image back2, Image back3,
@@ -166,6 +170,29 @@ public class Person {
         } else {
             return false;
         }
+    }
+    
+    private void displayInventory(Graphics g) {
+        int i = 0;
+        for (String e : inventory) {
+            if (e.equals("a")) {
+                g.drawImage(null, 0, MainClass.INVENTORY_Y, null);
+            }
+            i += 1;
+        }
+    }
+    
+    public void addInventory(String i) {
+        inventory.add(i);
+    }
+    
+    public boolean checkInventory(String i) {
+        for (String e : inventory) {
+            if (e.equals(i)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void stopUp() {
