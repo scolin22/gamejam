@@ -75,7 +75,6 @@ public class Tile {
 		else if (type == 'r') {
 			tileImage = MainClass.computer;
 		} else {
-			System.out.println(type);
 			type = 0;
 		}
 

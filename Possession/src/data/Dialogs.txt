@@ -1,6 +1,11 @@
 Security:
-"This is wtf", "This is kinda wtf"
+"I am the security guard."
 
-Fucker:
-"Wtf ", "yup"
+Employee1:
+"I am an employee"
 
+Employee2:
+"I am an employee"
+
+Secretary:
+"Hello, how may I help you?"
