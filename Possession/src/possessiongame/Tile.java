@@ -24,7 +24,25 @@ public class Tile {
 		r = new Rectangle();
 
 		if (type == 1) {
-			tileImage = MainClass.tileWall;
+			tileImage = MainClass.wall;
+		}
+		else if (type == 2) {
+			tileImage = MainClass.door;
+		}
+		else if (type == 3) {
+			tileImage = MainClass.desk;
+		}
+		else if (type == 4) {
+			tileImage = MainClass.chair;
+		}
+		else if (type == 5) {
+			tileImage = MainClass.safe;
+		}
+		else if (type == 6) {
+			tileImage = MainClass.camera;
+		}
+		else if (type == 7) {
+			tileImage = MainClass.computer;
 		} else {
 			type = 0;
 		}

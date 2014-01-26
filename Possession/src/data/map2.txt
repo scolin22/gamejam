@@ -1,5 +1,5 @@
 ! # = Tile Legend 
-! 1 = tileWall
+! 1 = wall
 ! 2 = door
 ! 3 = desk
 ! 4 = chair

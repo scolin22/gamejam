@@ -42,7 +42,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 
     private Dialog dialog;
 
-    public static Image tileWall;
+    public static Image wall, door, desk, chair, safe, camera, computer;
 
     //private Animation charAnim, char_backwardsAnim, char_leftAnim, char_rightAnim;
     
@@ -126,16 +126,24 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 		People.add( trainer );
 		currentPerson = trainer;
         
-        BufferedImage tileImg = null;
+        wall = readImage("data/wall.png");
+        door = readImage("data/wall.png");
+        desk = readImage("data/wall.png");
+        chair = readImage("data/wall.png");
+        safe = readImage("data/wall.png");
+        camera = readImage("data/wall.png");
+        computer = readImage("data/wall.png");
+    }
+    
+    public BufferedImage readImage(String fname) {
+    	BufferedImage tileImg = null;
 		try {
-			tileImg = ImageIO.read(new File("data/wall.png"));
+			tileImg = ImageIO.read(new File(fname));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	     // The above line throws an checked IOException which must be caught.
-        
-        tileWall = tileImg;
+		return tileImg;
     }
 
     @Override
