@@ -17,9 +17,9 @@ public class Background {
 	}
 
 	public void update() {
+		
 		bgX += speedX;
 		bgY += speedY;
-        System.out.println(String.valueOf(bgX) + " " + String.valueOf(bgY));
 	}
 
 	public int getBgX() {
