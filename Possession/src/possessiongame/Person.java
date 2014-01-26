@@ -1,7 +1,7 @@
 
 package possessiongame;
 
-import possessiongame.framework.Animation;
+import possessiongame.framework.PersonAnim;
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -27,7 +27,9 @@ public class Person {
     private boolean canPossess = false;
 
     private static Background bg = MainClass.getBg();
-
+    
+    private PersonAnim anims;
+    
     private int speedX = 0;
     private int speedY = 0;
 
@@ -38,60 +40,18 @@ public class Person {
 
     private Image current;
 
-    private boolean isActive;
+    private boolean isActive = false;
 
-    private Animation frontAnim, backAnim, leftAnim, rightAnim;
-
-    private int paranoia;
+    private int paranoia = 0;
     
     private ArrayList<String> inventory = new ArrayList<String>();
-
-    public Person(Image front, Image front2, Image front3,
-            Image back, Image back2, Image back3,
-            Image left, Image left2, Image left3,
-            Image right, Image right2, Image right3,
-            boolean isActive, int startX, int startY) {
-
-        frontAnim = new Animation();
-        frontAnim.addFrame(front, 75);
-        frontAnim.addFrame(front2, 75);
-        frontAnim.addFrame(front, 75);
-        frontAnim.addFrame(front3, 75);
-
-        rightAnim = new Animation();
-        rightAnim.addFrame(right, 75);
-        rightAnim.addFrame(right2, 75);
-        rightAnim.addFrame(right, 75);
-        rightAnim.addFrame(right3, 75);
-
-        backAnim = new Animation();
-        backAnim.addFrame(back, 75);
-        backAnim.addFrame(back2, 75);
-        backAnim.addFrame(back, 75);
-        backAnim.addFrame(back3, 75);
-
-        leftAnim = new Animation();
-        leftAnim.addFrame(left, 75);
-        leftAnim.addFrame(left2, 75);
-        leftAnim.addFrame(left, 75);
-        leftAnim.addFrame(left3, 75);
-
-        this.isActive = isActive;
-        centerX = startX;
-        centerY = startY;
-
-        current = front;
-
-        paranoia = 0;
+    public Person( boolean active, int x, int y, PersonAnim anims ){
+    	this.anims = anims;
+    	isActive = active;
+    	centerX = x;
+    	centerY = y;
+    	current = anims.getFront().getImage();
     }
-
-    public void animate(int speed) {
-        frontAnim.update(speed);
-        backAnim.update(speed);
-        leftAnim.update(speed);
-        rightAnim.update(speed);
-    }
-
     public void setActive(boolean flag) {
         isActive = flag;
     }
@@ -218,7 +178,7 @@ public class Person {
 
     public void startUp() {
         movingUp = true;
-        current = frontAnim.getImage();
+        current = anims.getFront().getImage();
         if (!movingDown) {
             speedY = -MOVESPEED;
         } else {
@@ -228,7 +188,7 @@ public class Person {
 
     public void startDown() {
         movingDown = true;
-        current = backAnim.getImage();
+        current = anims.getBack().getImage();
         if (!movingUp) {
             speedY = MOVESPEED;
         } else {
@@ -238,7 +198,7 @@ public class Person {
 
     public void startRight() {
         movingRight = true;
-        current = rightAnim.getImage();
+        current = anims.getRight().getImage();
         if (!movingLeft) {
             speedX = MOVESPEED;
         } else {
@@ -248,7 +208,7 @@ public class Person {
 
     public void startLeft() {
         movingLeft = true;
-        current = leftAnim.getImage();
+        current = anims.getLeft().getImage();
         if (!movingRight) {
             speedX = -MOVESPEED;
         } else {
@@ -340,4 +300,10 @@ public class Person {
     public boolean active(){
             return isActive;
     }
+	public void animate(int i) {
+		anims.getFront().update(i);
+		anims.getBack().update(i);
+		anims.getRight().update(i);
+		anims.getLeft().update(i);
+	}
 }

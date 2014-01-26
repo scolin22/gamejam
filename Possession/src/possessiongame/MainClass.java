@@ -22,6 +22,8 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import possessiongame.framework.PersonAnim;
+
 public class MainClass extends Applet implements Runnable, KeyListener {
 
     public final static int SCREEN_WIDTH = 800;
@@ -38,6 +40,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
     private ArrayList<Person> People;
     private Person player, security, employee1, employee2, secretary;
     private Image image, background, inventory;
+    private static PersonAnim playerAnims, securityAnims, employeeAnims, secretaryAnims;
 
     private Dialog dialog;
 
@@ -142,27 +145,47 @@ public class MainClass extends Applet implements Runnable, KeyListener {
             e.printStackTrace();
         }
 
-        player = new Person(charImg.getSubimage(130, 0, 16, 19),
-                charImg.getSubimage(146, 0, 15, 19),
-                charImg.getSubimage(161, 0, 15, 19), charImg.getSubimage(0, 0, 16, 19),
-                charImg.getSubimage(16, 0, 15, 19), charImg.getSubimage(31, 0, 15, 19),
-                charImg.getSubimage(46, 0, 14, 19), charImg.getSubimage(60, 0, 14, 19),
-                charImg.getSubimage(74, 0, 14, 19), charImg.getSubimage(88, 0, 14, 19),
-                charImg.getSubimage(102, 0, 14, 19), charImg.getSubimage(116, 0, 14, 19),
-                true, 550, 300);
-
-        security = new Person(charImg.getSubimage(130, 20, 16, 19), charImg.getSubimage(146, 20,
-                15, 19),
-                charImg.getSubimage(161, 20, 15, 19), charImg.getSubimage(0, 20, 16, 19),
-                charImg.getSubimage(16, 20, 15, 19), charImg.getSubimage(31, 20, 15, 19),
-                charImg.getSubimage(46, 20, 14, 19), charImg.getSubimage(60, 20, 14, 19),
-                charImg.getSubimage(74, 20, 14, 19), charImg.getSubimage(88, 20, 14, 19),
-                charImg.getSubimage(102, 20, 14, 19), charImg.getSubimage(116, 20, 14, 19),
-                false, 275, 300);
+        playerAnims = new PersonAnim(charImg.getSubimage(130, 0, 16, 21),charImg.getSubimage(146, 0, 15, 21),
+                charImg.getSubimage(161, 0, 15, 21), charImg.getSubimage(0, 0, 16, 21),
+                charImg.getSubimage(16, 0, 15, 21), charImg.getSubimage(31, 0, 15, 21),
+                charImg.getSubimage(46, 0, 14, 21), charImg.getSubimage(60, 0, 14, 21),
+                charImg.getSubimage(74, 0, 14, 21), charImg.getSubimage(88, 0, 14, 21),
+                charImg.getSubimage(102, 0, 14, 21), charImg.getSubimage(116, 0, 14, 21) );
+        
+        securityAnims = new PersonAnim(charImg.getSubimage(130, 21, 16, 21),charImg.getSubimage(146, 21, 15, 21),
+                charImg.getSubimage(161, 21, 15, 21), charImg.getSubimage(0, 21, 16, 21),
+                charImg.getSubimage(16, 21, 15, 21), charImg.getSubimage(31, 21, 15, 21),
+                charImg.getSubimage(46, 21, 14, 21), charImg.getSubimage(60, 21, 14, 21),
+                charImg.getSubimage(74, 21, 14, 21), charImg.getSubimage(88, 21, 14, 21),
+                charImg.getSubimage(102, 21, 14, 21), charImg.getSubimage(116, 21, 14, 21) );
+        
+        employeeAnims = new PersonAnim(charImg.getSubimage(46, 42, 14, 21), charImg.getSubimage(60, 42, 14, 21),
+                charImg.getSubimage(74, 42, 14, 21), charImg.getSubimage(0, 42, 16, 21),
+                charImg.getSubimage(16, 42, 15, 21), charImg.getSubimage(31, 42, 15, 21),
+                charImg.getSubimage(88, 42, 14, 21),charImg.getSubimage(102, 42, 14, 21), 
+                charImg.getSubimage(116, 42, 14, 21),charImg.getSubimage(130, 42, 16, 21),
+                charImg.getSubimage(146, 42, 15, 21),charImg.getSubimage(161, 42, 15, 21) );
+        
+        secretaryAnims = new PersonAnim(charImg.getSubimage(88, 63, 14, 21),charImg.getSubimage(102, 63, 14, 21), 
+                charImg.getSubimage(116, 63, 14, 21), charImg.getSubimage(0, 63, 16, 21),
+                charImg.getSubimage(16, 63, 15, 21), charImg.getSubimage(31, 63, 15, 21), 
+                charImg.getSubimage(130, 63, 16, 21),charImg.getSubimage(146, 63, 15, 21),
+                charImg.getSubimage(46, 63, 14, 21), charImg.getSubimage(60, 63, 14, 21),
+                charImg.getSubimage(74, 63, 14, 21), charImg.getSubimage(161, 63, 15, 21) );
+        
+        
+        player = new Person( true, 550, 300, playerAnims );
+        security = new Person( false, 275, 300, securityAnims );
+        employee1 = new Person( false, 275, 100, employeeAnims );
+        employee2 = new Person( false, 275, 200, employeeAnims );
+        secretary = new Person( false, 275, 400, secretaryAnims );
         
         People = new ArrayList<Person>();
         People.add(security);
         People.add(player);
+        People.add(employee1);
+        People.add(employee2);
+        People.add(secretary);
         currentPerson = player;
     }
 
@@ -233,6 +256,9 @@ public class MainClass extends Applet implements Runnable, KeyListener {
         while (true) {
             security.update();
             player.update();
+            secretary.update();
+            employee1.update();
+            employee2.update();
 
             if (currentPerson.getPossess()) {
                 int x_cur = currentPerson.getCenterX();
@@ -298,18 +324,9 @@ public class MainClass extends Applet implements Runnable, KeyListener {
         g.drawImage(inventory, 0, INVENTORY_Y, this);
 
         paintTiles(g);
-
-        // g.drawRect((int) security.rect.getX(), (int) security.rect.getY(),
-        // (int) security.rect.getWidth(), (int) security.rect.getHeight());
-
-        g.drawImage(security.getCurrent(), security.getCenterX(),
-                security.getCenterY(), this);
-
-        // g.drawRect((int) player.rect.getX(), (int) player.rect.getY(),
-        // (int) player.rect.getWidth(), (int) player.rect.getHeight());
-
-        g.drawImage(player.getCurrent(), player.getCenterX(),
-                player.getCenterY(), this);
+        for (int i = 0; i < People.size(); i++) {
+        	g.drawImage(People.get(i).getCurrent(), People.get(i).getCenterX(),People.get(i).getCenterY(), this);
+        }
 
         outputDialog(dialog, g);
 
