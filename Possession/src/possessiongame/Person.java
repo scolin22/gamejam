@@ -14,12 +14,14 @@ public class Person {
     private int centerY = 377;
     private int width = 25;
     private int height = 35;
+    private int radius = 20;
     final int offset = 60;
 
     private boolean movingLeft = false;
     private boolean movingRight = false;
     private boolean movingUp = false;
     private boolean movingDown = false;
+    private boolean canPossess = false;
 
     private static Background bg = MainClass.getBg();
 
@@ -229,6 +231,10 @@ public class Person {
         }
     }
     
+    public void possess(){
+    	canPossess = true;
+    }
+    
     public Image getCurrent(){
     	return current;
     }
@@ -272,6 +278,7 @@ public class Person {
     
     public void disable(){
     	this.isActive = false;
+    	canPossess = false;
     }
 
     public boolean isMovingUp() {
@@ -288,5 +295,17 @@ public class Person {
 
     public boolean isMovingRight() {
         return movingRight;
+    }
+    
+    public boolean getPossess(){
+    	return canPossess;
+    }
+    
+    public int getRadius(){
+    	return radius;
+    }
+    
+    public boolean active(){
+    	return isActive;
     }
 }
