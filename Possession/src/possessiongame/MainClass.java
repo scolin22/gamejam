@@ -408,14 +408,14 @@ public class MainClass extends Applet implements Runnable, KeyListener {
         return image;
     }
 
-    public static int getTileType(int x, int y) {
+    public static char getTileType(int x, int y) {
         x = x / Tile.TILE_SIZE;
         y = y / Tile.TILE_SIZE;
         if (x >= width || y >= height) {
-            return 1;
+            return '1';
         } else {
-            return tiles[y][x].getTileType();
+            return  tiles[y][x].getTileType();
         }
     }
-
+    
 }
