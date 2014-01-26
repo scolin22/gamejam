@@ -31,10 +31,7 @@ public class Person {
     //left - seen while moving left
     //right - seen while moving right
     
-	private Image current, front, front2, front3, 
-				  back, back2, back3, 
-				  left, left2, left3, 
-				  right, right2, right3;
+	private Image current;
 	
 	private boolean isActive;
 	
@@ -47,22 +44,6 @@ public class Person {
 				  Image left, Image left2, Image left3, 
 			      Image right, Image right2, Image right3, 
 			      boolean isActive, int startX, int startY) {
-		
-		this.front = front;
-		this.front2 = front2;
-		this.front3 = front3;
-		
-		this.back = back;
-		this.back2 = back2;
-		this.back3 = back3;
-				
-		this.left = left;
-		this.left2 = left2;
-		this.left3 = left3;
-				
-		this.right = right;
-		this.right2 = right2;
-		this.right3 = right3;
 		
 		frontAnim = new Animation();
 		frontAnim.addFrame(front, 75);
@@ -277,6 +258,15 @@ public class Person {
 
     public void setSpeedY(int speedY) {
         this.speedY = speedY;
+    }
+    
+    public Person enable(){
+    	this.isActive = true;
+    	return this;
+    }
+    
+    public void disable(){
+    	this.isActive = false;
     }
 
     public boolean isMovingUp() {

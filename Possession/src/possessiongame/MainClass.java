@@ -34,8 +34,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
     private static Person currentPerson;
 	private Person trainer;
 	private Person grunt;
-    private Image image, background, front, front2, front3, 
-    			  back, back2, back3, left, left2, left3, right, right2, right3;
+    private Image image, background;
 
     private Dialog dialog;
 
@@ -279,7 +278,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
                 break;
 
             case KeyEvent.VK_SPACE:
-                //player.jump();
+                currentPerson = grunt.enable();
                 break;
         }
     }
