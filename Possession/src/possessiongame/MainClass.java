@@ -28,8 +28,8 @@ public class MainClass extends Applet implements Runnable, KeyListener {
     public final static int SCREEN_WIDTH = 800;
     public final static int SCREEN_HEIGHT = 570;
     public final static int INVENTORY_Y = 500;
-    
-    //Relative Positioning of Speech Bubble to Player
+
+    // Relative Positioning of Speech Bubble to Player
     public final static int speech_OffsetX = 20;
     public final static int speech_OffsetY = -60;
     public final static int speechtext_OffsetX = 10;
@@ -37,16 +37,17 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 
     private static Person currentPerson;
     private ArrayList<Person> People;
-	private Person trainer;
-	private Person grunt;
+    private Person player, security, employee1, employee2, secretary;
     private Image image, background, inventory;
 
     private Dialog dialog;
 
-    public static Image wall, doorV, doorH, deskHL, deskHR, deskHC, deskVT, deskVB, deskVC, chairL, chairR, safe, cameraOR, cameraOL, cameraXR, cameraXL, computer;
+    public static Image wall, doorV, doorH, deskHL, deskHR, deskHC, deskVT, deskVB, deskVC, chairL,
+            chairR, safe, cameraOR, cameraOL, cameraXR, cameraXL, computer;
 
-    //private Animation charAnim, char_backwardsAnim, char_leftAnim, char_rightAnim;
-    
+    // private Animation charAnim, char_backwardsAnim, char_leftAnim,
+    // char_rightAnim;
+
     private Graphics second;
     public static URL base;
     private static Background bg;
@@ -70,82 +71,48 @@ public class MainClass extends Applet implements Runnable, KeyListener {
             // TODO: handle exception
         }
 
-        // Image Setups
-        BufferedImage charImg = null;
-
         dialog = new Dialog(getImage(base, "data/small_speech.jpg"));
 
-		try {
-			charImg = ImageIO.read(new File("data/personSpriteSheet.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
         bg = new Background(0, 0);
-	     // The above line throws an checked IOException which must be caught.
-		
-		try {
-	         // Open an audio input stream.
-	         URL url = this.getClass().getClassLoader().getResource("data/PossessionMain2.wav");
-	         AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
-	         // Get a sound clip resource.
-	         Clip clip = AudioSystem.getClip();
-	         // Open audio clip and load samples from the audio input stream.
-	         clip.open(audioIn);
-	         clip.start();
-	         clip.loop(Clip.LOOP_CONTINUOUSLY);
-	      } catch (UnsupportedAudioFileException e) {
-	         e.printStackTrace();
-	      } catch (IOException e) {
-	         e.printStackTrace();
-	      } catch (LineUnavailableException e) {
-	         e.printStackTrace();
-	      }
-		
 
-		trainer = new Person(charImg.getSubimage( 130, 0, 16, 19 ), charImg.getSubimage( 146, 0, 15, 19 ),
-					     	 charImg.getSubimage( 161, 0, 15, 19 ), charImg.getSubimage( 0, 0, 16, 19 ),
-					     	 charImg.getSubimage( 16, 0, 15, 19 ), charImg.getSubimage( 31, 0, 15, 19 ),
-					    	 charImg.getSubimage( 46, 0, 14, 19 ), charImg.getSubimage( 60, 0, 14, 19 ),
-					    	 charImg.getSubimage( 74, 0, 14, 19 ), charImg.getSubimage( 88, 0, 14, 19 ),
-					    	 charImg.getSubimage( 102, 0, 14, 19 ), charImg.getSubimage( 116, 0, 14, 19 ), 
-					    	 true, 550, 300);
-		
-		grunt = new Person(charImg.getSubimage( 130, 20, 16, 19 ), charImg.getSubimage( 146, 20, 15, 19 ),
-		     	 		   charImg.getSubimage( 161, 20, 15, 19 ), charImg.getSubimage( 0, 20, 16, 19 ),
-					       charImg.getSubimage( 16, 20, 15, 19 ), charImg.getSubimage( 31, 20, 15, 19 ),
-					       charImg.getSubimage( 46, 20, 14, 19 ), charImg.getSubimage( 60, 20, 14, 19 ),
-					       charImg.getSubimage( 74, 20, 14, 19 ), charImg.getSubimage( 88, 20, 14, 19 ),
-					       charImg.getSubimage( 102, 20, 14, 19 ), charImg.getSubimage( 116, 20, 14, 19 ), 
-					       false, 275, 300);
-		
-        background = getImage(base, "data/background.jpg");
-        inventory = getImage(base, "data/inventory.png");
-        if (inventory == null) {
-            System.out.println("wtf");
+        try {
+            // Open an audio input stream.
+            URL url = this.getClass().getClassLoader().getResource("data/PossessionMain2.wav");
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
+            // Get a sound clip resource.
+            Clip clip = AudioSystem.getClip();
+            // Open audio clip and load samples from the audio input stream.
+            clip.open(audioIn);
+            clip.start();
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
         }
 
-		People = new ArrayList<Person>();
-		People.add( grunt );
-		People.add( trainer );
-		currentPerson = trainer;
-		
-		BufferedImage tileImg = null;
-		try {
-			tileImg = ImageIO.read(new File("data/wall.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		wall = tileImg;
-		
-		try {
-			tileImg = ImageIO.read(new File("data/ObjectSpriteSheet.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        initCharacters();
+
+        background = getImage(base, "data/background.jpg");
+        inventory = getImage(base, "data/inventory.png");
+
+        BufferedImage tileImg = null;
+        try {
+            tileImg = ImageIO.read(new File("data/wall.png"));
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        wall = tileImg;
+
+        try {
+            tileImg = ImageIO.read(new File("data/ObjectSpriteSheet.png"));
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         doorV = tileImg.getSubimage(100, 25, 25, 25);
         doorH = tileImg.getSubimage(25, 75, 25, 25);
@@ -167,12 +134,45 @@ public class MainClass extends Applet implements Runnable, KeyListener {
         //recycling = tileImg.getSubimage(13, 14, 12, 11);
     }
 
+    private void initCharacters() {
+        BufferedImage charImg = null;
+        try {
+            charImg = ImageIO.read(new File("data/personSpriteSheet.png"));
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        player = new Person(charImg.getSubimage(130, 0, 16, 19),
+                charImg.getSubimage(146, 0, 15, 19),
+                charImg.getSubimage(161, 0, 15, 19), charImg.getSubimage(0, 0, 16, 19),
+                charImg.getSubimage(16, 0, 15, 19), charImg.getSubimage(31, 0, 15, 19),
+                charImg.getSubimage(46, 0, 14, 19), charImg.getSubimage(60, 0, 14, 19),
+                charImg.getSubimage(74, 0, 14, 19), charImg.getSubimage(88, 0, 14, 19),
+                charImg.getSubimage(102, 0, 14, 19), charImg.getSubimage(116, 0, 14, 19),
+                true, 550, 300);
+
+        security = new Person(charImg.getSubimage(130, 20, 16, 19), charImg.getSubimage(146, 20,
+                15, 19),
+                charImg.getSubimage(161, 20, 15, 19), charImg.getSubimage(0, 20, 16, 19),
+                charImg.getSubimage(16, 20, 15, 19), charImg.getSubimage(31, 20, 15, 19),
+                charImg.getSubimage(46, 20, 14, 19), charImg.getSubimage(60, 20, 14, 19),
+                charImg.getSubimage(74, 20, 14, 19), charImg.getSubimage(88, 20, 14, 19),
+                charImg.getSubimage(102, 20, 14, 19), charImg.getSubimage(116, 20, 14, 19),
+                false, 275, 300);
+        
+        People = new ArrayList<Person>();
+        People.add(security);
+        People.add(player);
+        currentPerson = player;
+    }
+
     @Override
     public void start() {
         // Initialize Tiles
         try {
             loadMap("data/map2.txt");
-           
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -199,7 +199,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
             }
         }
         height = lines.size();
-        
+
         tiles = new Tile[height][width];
 
         for (int j = 0; j < height; j++) {
@@ -232,32 +232,33 @@ public class MainClass extends Applet implements Runnable, KeyListener {
     @Override
     public void run() {
         while (true) {
-            grunt.update();
-            trainer.update();
-            
-            if( currentPerson.getPossess() ){
-            	int x_cur = currentPerson.getCenterX();
-            	int y_cur = currentPerson.getCenterY();
-            	double rad = currentPerson.getRadius();
-            	int index = -1;
-            	for( int i = 0; i < People.size(); i++ ){
-            		Person cur = People.get(i);
-            		if( !cur.active() ){
-            			int x = cur.getCenterX();
-                    	int y = cur.getCenterY();
-                    	double min = Math.sqrt(( x - x_cur )*( x - x_cur ) + ( y - y_cur )*( y - y_cur ));
-                    	if( min < rad ){
-                    		index = i;
-                    		rad = min;
-                    	}
-            		}
-            	}
-            	if( index != -1 ){
-            		currentPerson.disable();
-            		currentPerson = (People.get(index)).enable();
-            	}else{
-            		currentPerson.stopPossess();
-            	}
+            security.update();
+            player.update();
+
+            if (currentPerson.getPossess()) {
+                int x_cur = currentPerson.getCenterX();
+                int y_cur = currentPerson.getCenterY();
+                double rad = currentPerson.getRadius();
+                int index = -1;
+                for (int i = 0; i < People.size(); i++) {
+                    Person cur = People.get(i);
+                    if (!cur.active()) {
+                        int x = cur.getCenterX();
+                        int y = cur.getCenterY();
+                        double min = Math.sqrt((x - x_cur) * (x - x_cur) + (y - y_cur)
+                                * (y - y_cur));
+                        if (min < rad) {
+                            index = i;
+                            rad = min;
+                        }
+                    }
+                }
+                if (index != -1) {
+                    currentPerson.disable();
+                    currentPerson = (People.get(index)).enable();
+                } else {
+                    currentPerson.stopPossess();
+                }
             }
             updateTiles();
             bg.update();
@@ -270,11 +271,11 @@ public class MainClass extends Applet implements Runnable, KeyListener {
             }
         }
     }
-    
+
     public void animate() {
-		currentPerson.animate(10);
-	}
-    
+        currentPerson.animate(10);
+    }
+
     @Override
     public void update(Graphics g) {
         if (image == null) {
@@ -293,33 +294,35 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 
     @Override
     public void paint(Graphics g) {
-        
+
         g.drawImage(background, bg.getBgX(), bg.getBgY(), this);
         g.drawImage(inventory, 0, INVENTORY_Y, this);
-        
+
         paintTiles(g);
 
-//        g.drawRect((int) grunt.rect.getX(), (int) grunt.rect.getY(),
-//                (int) grunt.rect.getWidth(), (int) grunt.rect.getHeight());
-        
-        g.drawImage(grunt.getCurrent(), grunt.getCenterX(),
-        		grunt.getCenterY(), this);
-        
-//        g.drawRect((int) trainer.rect.getX(), (int) trainer.rect.getY(),
-//                (int) trainer.rect.getWidth(), (int) trainer.rect.getHeight());
-        
-        g.drawImage(trainer.getCurrent(), trainer.getCenterX(),
-        		trainer.getCenterY(), this);
-        
+        // g.drawRect((int) security.rect.getX(), (int) security.rect.getY(),
+        // (int) security.rect.getWidth(), (int) security.rect.getHeight());
+
+        g.drawImage(security.getCurrent(), security.getCenterX(),
+                security.getCenterY(), this);
+
+        // g.drawRect((int) player.rect.getX(), (int) player.rect.getY(),
+        // (int) player.rect.getWidth(), (int) player.rect.getHeight());
+
+        g.drawImage(player.getCurrent(), player.getCenterX(),
+                player.getCenterY(), this);
+
         outputDialog(dialog, g);
 
     }
-    
-    private void outputDialog(Dialog dialog, Graphics g){
-//    	g.drawImage(dialog.getDialog_background(), currentPerson.getCenterX() + speech_OffsetX, currentPerson.getCenterY() + speech_OffsetY, this);
-//		g.drawString(dialog.outputDialog(), currentPerson.getCenterX() + speechtext_OffsetX, currentPerson.getCenterY() + speechtext_OffsetY);
+
+    private void outputDialog(Dialog dialog, Graphics g) {
+        // g.drawImage(dialog.getDialog_background(), currentPerson.getCenterX()
+        // + speech_OffsetX, currentPerson.getCenterY() + speech_OffsetY, this);
+        // g.drawString(dialog.outputDialog(), currentPerson.getCenterX() +
+        // speechtext_OffsetX, currentPerson.getCenterY() + speechtext_OffsetY);
     }
-    
+
     private void updateTiles() {
         for (int j = 0; j < height; j++) {
             for (int i = 0; i < width; i++) {
@@ -371,15 +374,15 @@ public class MainClass extends Applet implements Runnable, KeyListener {
                 break;
 
             case KeyEvent.VK_DOWN:
-            	currentPerson.stopDown();
+                currentPerson.stopDown();
                 break;
 
             case KeyEvent.VK_LEFT:
-            	currentPerson.stopLeft();
+                currentPerson.stopLeft();
                 break;
 
             case KeyEvent.VK_RIGHT:
-            	currentPerson.stopRight();
+                currentPerson.stopRight();
                 break;
 
             case KeyEvent.VK_SPACE:
@@ -400,12 +403,12 @@ public class MainClass extends Applet implements Runnable, KeyListener {
     public static Person getPlayer() {
         return currentPerson;
     }
-    
-    public Image getImageResource(URL base, String location){
-    	Image image = getImage(base, location);
-    	return image;
-	}
-    
+
+    public Image getImageResource(URL base, String location) {
+        Image image = getImage(base, location);
+        return image;
+    }
+
     public static int getTileType(int x, int y) {
         x = x / Tile.TILE_SIZE;
         y = y / Tile.TILE_SIZE;

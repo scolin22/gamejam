@@ -256,14 +256,14 @@ public class Person {
     }
 
     public void startPossess(){
-    	canPossess = true;
+            canPossess = true;
     }
     public void stopPossess(){
-    	canPossess = false;
+            canPossess = false;
     }
     
     public Image getCurrent(){
-    	return current;
+            return current;
     }
 
     public int getCenterX() {
@@ -306,10 +306,10 @@ public class Person {
     }
     
     public void disable(){
-    	isActive = false;
-    	canPossess = false;
-    	speedY = 0;
-    	speedX = 0;
+            isActive = false;
+            canPossess = false;
+            speedY = 0;
+            speedX = 0;
     }
 
     public boolean isMovingUp() {
@@ -329,14 +329,14 @@ public class Person {
     }
  
     public boolean getPossess(){
-    	return canPossess;
+            return canPossess;
     }
     
     public int getRadius(){
-    	return radius;
+            return radius;
     }
     
     public boolean active(){
-    	return isActive;
+            return isActive;
     }
 }

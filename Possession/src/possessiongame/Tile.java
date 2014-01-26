@@ -4,9 +4,9 @@ import java.awt.Image;
 import java.awt.Rectangle;
 
 public class Tile {
-	
+        
     public static final int TILE_SIZE = 25;
-	
+        
 	private int tileX, tileY, speedX, speedY;
 	private char type;
 	public Image tileImage;
@@ -74,8 +74,9 @@ public class Tile {
 		}
 		else if (type == 'r') {
 			tileImage = MainClass.computer;
-		} else {
-			System.out.println(type);
+		}else if (type == 0){
+			
+		}else {
 			type = 0;
 		}
 
@@ -107,15 +108,15 @@ public class Tile {
         return type;
     }
 
-	public void setTileX(int tileX) {
-		this.tileX = tileX;
-	}
+        public void setTileX(int tileX) {
+                this.tileX = tileX;
+        }
 
-	public void setTileY(int tileY) {
-		this.tileY = tileY;
-	}
+        public void setTileY(int tileY) {
+                this.tileY = tileY;
+        }
 
-	public void setTileImage(Image tileImage) {
-		this.tileImage = tileImage;
-	}
+        public void setTileImage(Image tileImage) {
+                this.tileImage = tileImage;
+        }
 }
