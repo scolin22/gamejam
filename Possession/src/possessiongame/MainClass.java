@@ -76,7 +76,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 
         try {
             // Open an audio input stream.
-            URL url = this.getClass().getClassLoader().getResource("data/PossessionMain2.wav");
+            URL url = this.getClass().getClassLoader().getResource("data/Rest for the Wicked.wav");
             AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
             // Get a sound clip resource.
             Clip clip = AudioSystem.getClip();
@@ -121,8 +121,8 @@ public class MainClass extends Applet implements Runnable, KeyListener {
         deskHL = tileImg.getSubimage(25, 25, 25, 25);
         deskHR = tileImg.getSubimage(0, 25, 25, 25);
         deskHC = tileImg.getSubimage(25, 0, 25, 25);
-        chairL = tileImg.getSubimage(0, 75, 9, 15);
-        chairR = tileImg.getSubimage(13, 75, 9, 15);
+        chairL = tileImg.getSubimage(6, 97, 18, 25);
+        chairR = tileImg.getSubimage(28, 97, 18, 25);
         safe = tileImg.getSubimage(0, 50, 25, 25);
         cameraOR = tileImg.getSubimage(25, 50, 25, 20);
         cameraOL = tileImg.getSubimage(75, 50, 25, 20);
