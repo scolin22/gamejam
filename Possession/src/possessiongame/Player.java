@@ -83,7 +83,6 @@ public class Player {
     }
     
     private boolean checkCollision () {
-        System.out.println(String.valueOf(centerX) + " " + String.valueOf(centerY));
         if (centerX < 0 || centerY < 0) {
             return true;
         } else if (MainClass.getTileType(centerX - bg.getBgX(), centerY - bg.getBgY()) != 0) {
@@ -95,7 +94,6 @@ public class Player {
         } else if (MainClass.getTileType(centerX+width - bg.getBgX(), centerY+height - bg.getBgY()) != 0) {
             return true;
         } else {
-            System.out.println("False");
             return false;
         }
     }

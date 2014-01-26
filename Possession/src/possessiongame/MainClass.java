@@ -1,6 +1,8 @@
 
 package possessiongame;
 
+import possessiongame.framework.Animation;
+
 import java.applet.Applet;
 import java.awt.Color;
 import java.awt.Frame;
@@ -17,8 +19,6 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
-
-import possessiongame.framework.Animation;
 
 public class MainClass extends Applet implements Runnable, KeyListener {
 
