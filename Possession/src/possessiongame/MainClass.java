@@ -18,16 +18,29 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 
     public final static int SCREEN_WIDTH = 800;
     public final static int SCREEN_HEIGHT = 480;
+    
+    //Relative Positioning of Speech Bubble to Player
+    public final static int speech_OffsetX = 20;
+    public final static int speech_OffsetY = -60;
+    public final static int speechtext_OffsetX = 10;
+    public final static int speechtext_OffsetY = -30;
 
     private static Player player;
+    
     private Image image, currentSprite, character, background, character_backwards,
-            character_left, character_right;
+    character_left, character_right, character2, character_backwards2,
+    character_left2, character_right2, character3, character_backwards3,
+    character_left3, character_right3;
+    
+    private Dialog dialog;
 
     public static Image tilegrassTop, tilegrassBot, tilegrassLeft,
             tilegrassRight, tiledirt;
 
+    //private Animation charAnim, char_backwardsAnim, char_leftAnim, char_rightAnim;
+    
     private Graphics second;
-    private URL base;
+    public static URL base;
     private static Background bg;
 
     private ArrayList<Tile> tilearray = new ArrayList<Tile>();
@@ -48,10 +61,13 @@ public class MainClass extends Applet implements Runnable, KeyListener {
         }
 
         // Image Setups
+        dialog = new Dialog(getImage(base, "data/small_speech.jpg"));
+
         character = getImage(base, "data/Char_forward.png");
         character_backwards = getImage(base, "data/Char_backwards.png");
         character_left = getImage(base, "data/Char_left.png");
         character_right = getImage(base, "data/Char_right.png");
+        
 
         currentSprite = character;
         background = getImage(base, "data/background2.jpg");
@@ -67,10 +83,12 @@ public class MainClass extends Applet implements Runnable, KeyListener {
     public void start() {
         bg = new Background(0, 0);
         player = new Player();
+        
 
         // Initialize Tiles
         try {
             loadMap("data/map1.txt");
+           
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -166,13 +184,17 @@ public class MainClass extends Applet implements Runnable, KeyListener {
         g.drawImage(background, bg.getBgX(), bg.getBgY(), this);
         paintTiles(g);
 
-        g.drawRect((int) player.rect.getX(), (int) player.rect.getY(),
-                (int) player.rect.getWidth(), (int) player.rect.getHeight());
+        g.drawRect((int) player.rect.getX(), (int) player.rect.getY(),(int) player.rect.getWidth(), (int) player.rect.getHeight());    
+        g.drawImage(currentSprite, player.getCenterX(), player.getCenterY(), this);
         
-        g.drawImage(currentSprite, player.getCenterX(),
-                player.getCenterY(), this);
+        outputDialog(dialog, g);
     }
-
+    
+    private void outputDialog(Dialog dialog, Graphics g){
+    	g.drawImage(dialog.getDialog_background(), player.getCenterX() + speech_OffsetX, player.getCenterY() + speech_OffsetY, this);
+		g.drawString(dialog.outputDialog(), player.getCenterX() + speechtext_OffsetX, player.getCenterY() + speechtext_OffsetY);
+    }
+    
     private void updateTiles() {
         for (int i = 0; i < tilearray.size(); i++) {
             Tile t = (Tile) tilearray.get(i);
@@ -252,6 +274,12 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 
     public static Player getPlayer() {
         return player;
+    }
+    
+    public Image getImageResource(URL base, String location){
+    	Image image = getImage(base, location);
+    	return image;
+    	
     }
 
 }

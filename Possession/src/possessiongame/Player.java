@@ -36,19 +36,19 @@ public class Player {
             bg.setSpeedX(0);
         }
         if (speedY == 0) {
-            bg.setSpeedX(0);
+            bg.setSpeedY(0);
         }
         if (speedX > 0 && centerX > MainClass.SCREEN_WIDTH / 2 + offset) {
-            bg.setSpeedX(-MOVESPEED);
+            bg.setSpeedX((-speedX));
         }
         if (speedX < 0 && centerX < MainClass.SCREEN_WIDTH / 2 - offset) {
-            bg.setSpeedX(+MOVESPEED);
+            bg.setSpeedX(-speedX);
         }
         if (speedY > 0 && centerY > MainClass.SCREEN_HEIGHT / 2 + offset) {
-            bg.setSpeedY(-MOVESPEED);
+            bg.setSpeedY(-speedY);
         }
         if (speedY < 0 && centerY < MainClass.SCREEN_HEIGHT / 2 - offset) {
-            bg.setSpeedY(+MOVESPEED);
+            bg.setSpeedY(-speedY);
         }
 
         rect.setRect(centerX, centerY, 27, 36);

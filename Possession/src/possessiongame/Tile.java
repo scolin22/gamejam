@@ -49,6 +49,8 @@ public class Tile {
 		r.setBounds(tileX, tileY, 40, 40);
 
 		if (r.intersects(Player.rect) && type != 0) {
+			player.setSpeedX(0);
+		    player.setSpeedY(0);
 		    player.setCenterX(safeX);
 		    player.setCenterY(safeY);
 		} else {
