@@ -10,8 +10,8 @@ public class Person {
 	// Constants are Here
     final int MOVESPEED = 2;
 
-    private int centerX;
-    private int centerY;
+    private int centerX = 100;
+    private int centerY = 377;
     private int width = 25;
     private int height = 35;
     final int offset = 60;
@@ -95,6 +95,7 @@ public class Person {
     public void update() {
     	if( !isActive )
     		return;
+    	
     	centerX += speedX;
         if (checkCollision()) {
             centerX -= speedX;
@@ -107,6 +108,7 @@ public class Person {
             } else {
                 if (bg.getBgX() < 0) {
                     if (speedX < 0 && centerX < MainClass.SCREEN_WIDTH / 2 - offset) {
+
                         centerX -= speedX;
                         bg.setSpeedX(+MOVESPEED);
                     }
@@ -145,7 +147,7 @@ public class Person {
             }
         }
 
-        rect.setRect(centerX, centerY, 27, 36);
+        rect.setRect(centerX, centerY, width, height);
     }
     
     private boolean checkCollision () {

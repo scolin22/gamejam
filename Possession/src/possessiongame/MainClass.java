@@ -116,7 +116,6 @@ public class MainClass extends Applet implements Runnable, KeyListener {
     @Override
     public void start() {
         currentPerson = trainer;
-        bg = new Background(0, 0);
 
         // Initialize Tiles
         try {
@@ -218,6 +217,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 
     @Override
     public void paint(Graphics g) {
+        
         g.drawImage(background, bg.getBgX(), bg.getBgY(), this);
         paintTiles(g);
 
