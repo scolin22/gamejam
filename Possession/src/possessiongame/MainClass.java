@@ -232,6 +232,8 @@ public class MainClass extends Applet implements Runnable, KeyListener {
         
         g.drawImage(trainer.getCurrent(), trainer.getCenterX(),
         		trainer.getCenterY(), this);
+        
+        outputDialog(dialog, g);
 
     }
     
