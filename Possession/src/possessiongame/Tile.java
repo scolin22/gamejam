@@ -5,17 +5,17 @@ import java.awt.Rectangle;
 
 public class Tile {
 	
+    public static final int TILE_SIZE = 40;
 	
-	private int tileX, tileY, speedX, speedY, type, safeY, safeX;
+	private int tileX, tileY, speedX, speedY, type;
 	public Image tileImage;
 
-	private Player player = MainClass.getPlayer();
 	private Background bg = MainClass.getBg();
 	private Rectangle r;
 
 	public Tile(int x, int y, int typeInt) {
-		tileX = x * 40;
-		tileY = y * 40;
+		tileX = x * TILE_SIZE;
+		tileY = y * TILE_SIZE;
 
 		type = typeInt;
 
@@ -46,52 +46,34 @@ public class Tile {
 		tileX += speedX;
 		tileY += speedY;
 
-		r.setBounds(tileX, tileY, 40, 40);
-
-		if (r.intersects(Player.rect) && type != 0) {
-			player.setSpeedX(0);
-		    player.setSpeedY(0);
-		    player.setCenterX(safeX);
-		    player.setCenterY(safeY);
-		} else {
-			safeY = player.getCenterY();
-			safeX = player.getCenterX();
-		}
-
+		r.setBounds(tileX, tileY, TILE_SIZE, TILE_SIZE);
 	}
 
 	public int getTileX() {
 		return tileX;
 	}
 
+    public int getTileY() {
+        return tileY;
+    }
+
+    public Image getTileImage() {
+        return tileImage;
+    }
+    
+    public int getTileType() {
+        return type;
+    }
+
 	public void setTileX(int tileX) {
 		this.tileX = tileX;
-	}
-
-	public int getTileY() {
-		return tileY;
 	}
 
 	public void setTileY(int tileY) {
 		this.tileY = tileY;
 	}
 
-	public Image getTileImage() {
-		return tileImage;
-	}
-
 	public void setTileImage(Image tileImage) {
 		this.tileImage = tileImage;
 	}
-
-	public void checkCollision(Rectangle prect) {
-		if (prect.intersects(r)) {
-			System.out.println("collision");
-			player.setCenterY(safeY + 1);
-			player.setSpeedY(0);
-		} else {
-			safeY = player.getCenterY();
-		}
-	}
-
 }

@@ -1,6 +1,8 @@
 
 package possessiongame;
 
+import possessiongame.framework.Animation;
+
 import java.applet.Applet;
 import java.awt.Color;
 import java.awt.Frame;
@@ -8,11 +10,15 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
 
 public class MainClass extends Applet implements Runnable, KeyListener {
 
@@ -28,14 +34,16 @@ public class MainClass extends Applet implements Runnable, KeyListener {
     private static Player player;
     
     private Image image, currentSprite, character, background, character_backwards,
-    character_left, character_right, character2, character_backwards2,
-    character_left2, character_right2, character3, character_backwards3,
-    character_left3, character_right3;
+	    character_left, character_right, character2, character_backwards2,
+	    character_left2, character_right2, character3, character_backwards3,
+	    character_left3, character_right3;
     
     private Dialog dialog;
 
     public static Image tilegrassTop, tilegrassBot, tilegrassLeft,
             tilegrassRight, tiledirt;
+    
+    private Animation charAnim, char_backwardsAnim, char_leftAnim, char_rightAnim;
 
     //private Animation charAnim, char_backwardsAnim, char_leftAnim, char_rightAnim;
     
@@ -43,7 +51,9 @@ public class MainClass extends Applet implements Runnable, KeyListener {
     public static URL base;
     private static Background bg;
 
-    private ArrayList<Tile> tilearray = new ArrayList<Tile>();
+    private static Tile[][] tiles;
+    private static int height = 0;
+    private static int width = 0;
 
     @Override
     public void init() {
@@ -53,7 +63,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
         setFocusable(true);
         addKeyListener(this);
         Frame frame = (Frame) this.getParent().getParent();
-        frame.setTitle("The Game");
+        frame.setTitle("Possession");
         try {
             base = getDocumentBase();
         } catch (Exception e) {
@@ -63,11 +73,30 @@ public class MainClass extends Applet implements Runnable, KeyListener {
         // Image Setups
         dialog = new Dialog(getImage(base, "data/small_speech.jpg"));
 
-        character = getImage(base, "data/Char_forward.png");
-        character_backwards = getImage(base, "data/Char_backwards.png");
-        character_left = getImage(base, "data/Char_left.png");
-        character_right = getImage(base, "data/Char_right.png");
-        
+        BufferedImage bigImg = null;
+		try {
+			bigImg = ImageIO.read(new File("data/TrainerSpriteSheet.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	     // The above line throws an checked IOException which must be caught.
+		
+		character_backwards = bigImg.getSubimage( 0, 0, 14, 19 );
+		character_backwards2 = bigImg.getSubimage( 14, 0, 15, 19 );
+		character_backwards3 = bigImg.getSubimage( 29, 0, 15, 19 );
+		
+		character_left = bigImg.getSubimage( 44, 0, 14, 19 );
+		character_left2 = bigImg.getSubimage( 58, 0, 14, 19 );
+		character_left3 = bigImg.getSubimage( 72, 0, 14, 19 );
+		
+		character = bigImg.getSubimage( 86, 0, 14, 19 );
+		character2 = bigImg.getSubimage( 100, 0, 14, 19 );
+		character3 = bigImg.getSubimage( 114, 0, 14, 19 );
+		
+		character_right = bigImg.getSubimage( 128, 0, 14, 19 );
+		character_right2 = bigImg.getSubimage( 142, 0, 14, 19 );
+		character_right3 = bigImg.getSubimage( 156, 0, 14, 19 );
 
         currentSprite = character;
         background = getImage(base, "data/background2.jpg");
@@ -77,6 +106,33 @@ public class MainClass extends Applet implements Runnable, KeyListener {
         tilegrassBot = getImage(base, "data/tilegrassbot.png");
         tilegrassLeft = getImage(base, "data/tilegrassleft.png");
         tilegrassRight = getImage(base, "data/tilegrassright.png");
+        
+        
+        charAnim = new Animation();
+        charAnim.addFrame(character, 75);
+        charAnim.addFrame(character2, 75);
+        charAnim.addFrame(character, 75);
+        charAnim.addFrame(character3, 75);
+		
+        char_rightAnim = new Animation();
+        char_rightAnim.addFrame(character_right, 75);
+        char_rightAnim.addFrame(character_right2, 75);
+        char_rightAnim.addFrame(character_right, 75);
+        char_rightAnim.addFrame(character_right3, 75);
+        
+        char_backwardsAnim = new Animation();
+        char_backwardsAnim.addFrame(character_backwards, 75);
+        char_backwardsAnim.addFrame(character_backwards2, 75);
+        char_backwardsAnim.addFrame(character_backwards, 75);
+        char_backwardsAnim.addFrame(character_backwards3, 75);
+        
+        char_leftAnim = new Animation();
+        char_leftAnim.addFrame(character_left, 75);
+        char_leftAnim.addFrame(character_left2, 75);
+        char_leftAnim.addFrame(character_left, 75);
+        char_leftAnim.addFrame(character_left3, 75);
+		
+		currentSprite = charAnim.getImage();
     }
 
     @Override
@@ -90,7 +146,6 @@ public class MainClass extends Applet implements Runnable, KeyListener {
             loadMap("data/map1.txt");
            
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -100,13 +155,10 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 
     private void loadMap(String filename) throws IOException {
         ArrayList lines = new ArrayList();
-        int width = 0;
-        int height = 0;
 
         BufferedReader reader = new BufferedReader(new FileReader(filename));
         while (true) {
             String line = reader.readLine();
-            // no more lines to read
             if (line == null) {
                 reader.close();
                 break;
@@ -119,16 +171,19 @@ public class MainClass extends Applet implements Runnable, KeyListener {
             }
         }
         height = lines.size();
+        
+        tiles = new Tile[height][width];
 
-        for (int j = 0; j < 12; j++) {
+        for (int j = 0; j < height; j++) {
             String line = (String) lines.get(j);
             for (int i = 0; i < width; i++) {
-                System.out.println(i + "is i ");
-
                 if (i < line.length()) {
                     char ch = line.charAt(i);
                     Tile t = new Tile(i, j, Character.getNumericValue(ch));
-                    tilearray.add(t);
+                    tiles[j][i] = t;
+                } else {
+                    Tile t = new Tile(i, j, 0);
+                    tiles[j][i] = t;
                 }
 
             }
@@ -150,10 +205,10 @@ public class MainClass extends Applet implements Runnable, KeyListener {
     public void run() {
         while (true) {
             player.update();
-            currentSprite = character;
             
             updateTiles();
             bg.update();
+            animate();
             repaint();
             try {
                 Thread.sleep(17);
@@ -162,7 +217,14 @@ public class MainClass extends Applet implements Runnable, KeyListener {
             }
         }
     }
-
+    
+    public void animate() {
+		charAnim.update(10);
+		char_leftAnim.update(10);
+		char_rightAnim.update(10);
+		char_backwardsAnim.update(10);
+	}
+    
     @Override
     public void update(Graphics g) {
         if (image == null) {
@@ -184,8 +246,8 @@ public class MainClass extends Applet implements Runnable, KeyListener {
         g.drawImage(background, bg.getBgX(), bg.getBgY(), this);
         paintTiles(g);
 
-        g.drawRect((int) player.rect.getX(), (int) player.rect.getY(),(int) player.rect.getWidth(), (int) player.rect.getHeight());    
         g.drawImage(currentSprite, player.getCenterX(), player.getCenterY(), this);
+
         
         outputDialog(dialog, g);
     }
@@ -196,16 +258,20 @@ public class MainClass extends Applet implements Runnable, KeyListener {
     }
     
     private void updateTiles() {
-        for (int i = 0; i < tilearray.size(); i++) {
-            Tile t = (Tile) tilearray.get(i);
-            t.update();
+        for (int j = 0; j < height; j++) {
+            for (int i = 0; i < width; i++) {
+                Tile t = (Tile) tiles[j][i];
+                t.update();
+            }
         }
     }
 
     private void paintTiles(Graphics g) {
-        for (int i = 0; i < tilearray.size(); i++) {
-            Tile t = (Tile) tilearray.get(i);
-            g.drawImage(t.getTileImage(), t.getTileX(), t.getTileY(), this);
+        for (int j = 0; j < height; j++) {
+            for (int i = 0; i < width; i++) {
+                Tile t = (Tile) tiles[j][i];
+                g.drawImage(t.getTileImage(), t.getTileX(), t.getTileY(), this);
+            }
         }
     }
 
@@ -213,22 +279,22 @@ public class MainClass extends Applet implements Runnable, KeyListener {
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_UP:
-                currentSprite = character;
+                currentSprite = charAnim.getImage();
                 player.startUp();
                 break;
 
             case KeyEvent.VK_DOWN:
-                currentSprite = character_backwards;
+                currentSprite = char_backwardsAnim.getImage();
                 player.startDown();
                 break;
 
             case KeyEvent.VK_LEFT:
-                currentSprite = character_left;
+                currentSprite = char_leftAnim.getImage();
                 player.startLeft();
                 break;
 
             case KeyEvent.VK_RIGHT:
-                currentSprite = character_right;
+                currentSprite = char_rightAnim.getImage();
                 player.startRight();
                 break;
 
@@ -279,7 +345,16 @@ public class MainClass extends Applet implements Runnable, KeyListener {
     public Image getImageResource(URL base, String location){
     	Image image = getImage(base, location);
     	return image;
-    	
+	}
+    
+    public static int getTileType(int x, int y) {
+        x = x / Tile.TILE_SIZE;
+        y = y / Tile.TILE_SIZE;
+        if (x >= width || y >= height) {
+            return 1;
+        } else {
+            return tiles[y][x].getTileType();
+        }
     }
 
 }
