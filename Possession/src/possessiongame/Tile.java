@@ -21,7 +21,6 @@ public class Tile {
 		tileY = y * TILE_SIZE;
 
 		type = ch;
-
 		r = new Rectangle();
 
 		if (type == '1') {
@@ -74,10 +73,9 @@ public class Tile {
 		}
 		else if (type == 'r') {
 			tileImage = MainClass.computer;
-		}else if (type == 0){
-			
+		}else if (type == ' '){
+			type = '0';
 		}else {
-			type = 0;
 		}
 
 	}

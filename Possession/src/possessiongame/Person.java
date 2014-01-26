@@ -156,16 +156,17 @@ public class Person {
     }
 
     private boolean checkCollision() {
+    	
         if (centerX < 0 || centerY < 0) {
             return true;
-        } else if (MainClass.getTileType(centerX - bg.getBgX(), centerY - bg.getBgY()) != 0) {
+        } else if (MainClass.getTileType(centerX - bg.getBgX(), centerY - bg.getBgY()) != '0') {
+        	return true;
+        } else if (MainClass.getTileType(centerX - bg.getBgX(), centerY + height - bg.getBgY()) != '0') {
             return true;
-        } else if (MainClass.getTileType(centerX - bg.getBgX(), centerY + height - bg.getBgY()) != 0) {
-            return true;
-        } else if (MainClass.getTileType(centerX + width - bg.getBgX(), centerY - bg.getBgY()) != 0) {
+        } else if (MainClass.getTileType(centerX + width - bg.getBgX(), centerY - bg.getBgY()) != '0') {
             return true;
         } else if (MainClass.getTileType(centerX + width - bg.getBgX(),
-                centerY + height - bg.getBgY()) != 0) {
+                centerY + height - bg.getBgY()) != '0') {
             return true;
         } else {
             return false;
