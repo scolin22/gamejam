@@ -75,6 +75,8 @@ public class Tile {
 			tileImage = MainClass.computer;
 		}else if (type == ' '){
 			type = '0';
+		}else if( type == 'g' ){
+			tileImage = MainClass.garbage;
 		}else {
 		}
 

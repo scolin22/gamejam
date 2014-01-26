@@ -42,7 +42,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
     private Dialog dialog;
 
     public static Image wall, doorV, doorH, deskHL, deskHR, deskHC, deskVT, deskVB, deskVC, chairL,
-            chairR, safe, cameraOR, cameraOL, cameraXR, cameraXL, computer;
+            chairR, safe, cameraOR, cameraOL, cameraXR, cameraXL, computer, garbage;
 
     // private Animation charAnim, char_backwardsAnim, char_leftAnim,
     // char_rightAnim;
@@ -113,7 +113,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
             e.printStackTrace();
         }
 
-        doorV = tileImg.getSubimage(100, 25, 25, 25);
+        doorV = tileImg.getSubimage(100, 25, 25, 25); 
         doorH = tileImg.getSubimage(25, 75, 25, 25);
         deskVT = tileImg.getSubimage(75, 100, 25, 25);
         deskVB = tileImg.getSubimage(75, 75, 25, 25);
@@ -129,7 +129,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
         cameraXR = tileImg.getSubimage(50, 50, 25, 20);
         cameraXL = tileImg.getSubimage(100, 50, 25, 20);
         computer = tileImg.getSubimage(0, 0, 12, 12);
-        //garbage = tileImg.getSubimage(0, 12, 12, 13);
+        garbage = tileImg.getSubimage(0, 12, 12, 13);
         //recycling = tileImg.getSubimage(13, 14, 12, 11);
     }
 
