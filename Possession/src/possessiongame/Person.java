@@ -45,13 +45,23 @@ public class Person {
     private int paranoia;
     
     private ArrayList<String> inventory = new ArrayList<String>();
+    private ArrayList<String> dialog = new ArrayList<String>();
+    public String outputMessage;
+    private long ticks = 0;
+    private int mIndex = 0;
 
     public Person(Image front, Image front2, Image front3,
             Image back, Image back2, Image back3,
             Image left, Image left2, Image left3,
             Image right, Image right2, Image right3,
-            boolean isActive, int startX, int startY) {
-
+            boolean isActive, int startX, int startY, ArrayList<String> d) {
+        
+        if (d != null) {
+            dialog = d;
+        } else {
+            dialog = null;
+        }
+        
         frontAnim = new Animation();
         frontAnim.addFrame(front, 75);
         frontAnim.addFrame(front2, 75);
@@ -103,9 +113,23 @@ public class Person {
         if (!isActive) {
             centerX += bg.getSpeedX();
             centerY += bg.getSpeedY();
+            if (dialog != null) {
+                if (System.currentTimeMillis() - ticks > 3000) {
+                    outputMessage = dialog.get(mIndex);
+                    mIndex++;
+                    if (mIndex >= dialog.size()) {
+                        mIndex = 0;
+                    }
+                    ticks = System.currentTimeMillis();
+                } else if (System.currentTimeMillis() - ticks > 2500) {
+                    outputMessage = null;
+                }
+            }
             return;
         }
 
+        outputMessage = null;
+        
         centerX += speedX;
         if (checkCollision()) {
             centerX -= speedX;
