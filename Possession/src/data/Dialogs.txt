@@ -1,5 +1,5 @@
-Security guard:
+Security:
 "This is wtf", "This is kinda wtf"
 
-The fucker:
+Fucker:
 "Wtf ", "yup"
