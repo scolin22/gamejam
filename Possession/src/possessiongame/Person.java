@@ -65,7 +65,7 @@ public class Person {
         }
       
     	
-    	allowedTiles.add('a');
+    	//allowedTiles.add('a');
     	allowedTiles.add(' ');
     	allowedTiles.add('0');
 
@@ -190,32 +190,14 @@ public class Person {
     	
         if (centerX < 0 || centerY < 0) {
             return true;
-        } else if (MainClass.getTileType(centerX - bg.getBgX(), centerY - bg.getBgY()) != '0') {
-        	if(this.allowedTile(MainClass.getTileType(centerX - bg.getBgX(), centerY - bg.getBgY()))){
-        		//return false;
-        	}else{
-        		return true;
-        	}
-        } else if (MainClass.getTileType(centerX - bg.getBgX(), centerY + height - bg.getBgY()) != '0') {
-        	if(this.allowedTile(MainClass.getTileType(centerX - bg.getBgX(), centerY + height - bg.getBgY()))){
-        		//return false;
-        	}else{
-        		return true;
-        	}
-        } else if (MainClass.getTileType(centerX + width - bg.getBgX(), centerY - bg.getBgY()) != '0') {
-        	if(this.allowedTile(MainClass.getTileType(centerX + width - bg.getBgX(), centerY - bg.getBgY()))){
-        		//return false;
-        	}else{
-        		return true;
-        	}
-        } else if (MainClass.getTileType(centerX + width - bg.getBgX(),
-                centerY + height - bg.getBgY()) != '0') {
-        	if(this.allowedTile(MainClass.getTileType(centerX + width - bg.getBgX(),
-                centerY + height - bg.getBgY()))){
-        		//return false;
-        	}else{
-        		return true;
-        	}
+        } else if(!this.allowedTile(MainClass.getTileType(centerX - bg.getBgX(), centerY - bg.getBgY()))){
+        	return true;
+        } else if(!this.allowedTile(MainClass.getTileType(centerX - bg.getBgX(), centerY + height - bg.getBgY()))){
+        	return true;
+        } else if(!this.allowedTile(MainClass.getTileType(centerX + width - bg.getBgX(), centerY - bg.getBgY()))){
+        	return true;
+        } else if(!this.allowedTile(MainClass.getTileType(centerX + width - bg.getBgX(), centerY + height - bg.getBgY()))){
+        	return true;
         } 
         return false;
     }
