@@ -1,20 +1,21 @@
-
 package possessiongame;
 
+import possessiongame.framework.Animation;
+
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
-
-import possessiongame.framework.Animation;
+import java.util.ArrayList;
 
 public class Person {
 
     // Constants are Here
     final int MOVESPEED = 2;
 
-    private int centerX = 100;
-    private int centerY = 377;
-    private int width = 25;
-    private int height = 35;
+    private int centerX;
+    private int centerY;
+    private int width = 16;
+    private int height = 19;
     private int radius = 50;
     final int offset = 60;
 
@@ -41,6 +42,8 @@ public class Person {
     private Animation frontAnim, backAnim, leftAnim, rightAnim;
 
     private int paranoia;
+    
+    private ArrayList<String> inventory = new ArrayList<String>();
 
     public Person(Image front, Image front2, Image front3,
             Image back, Image back2, Image back3,
@@ -167,6 +170,29 @@ public class Person {
             return false;
         }
     }
+    
+    private void displayInventory(Graphics g) {
+        int i = 0;
+        for (String e : inventory) {
+            if (e.equals("a")) {
+                g.drawImage(null, 0, MainClass.INVENTORY_Y, null);
+            }
+            i += 1;
+        }
+    }
+    
+    public void addInventory(String i) {
+        inventory.add(i);
+    }
+    
+    public boolean checkInventory(String i) {
+        for (String e : inventory) {
+            if (e.equals(i)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public void stopUp() {
         movingUp = false;
@@ -229,14 +255,14 @@ public class Person {
     }
 
     public void startPossess(){
-    	canPossess = true;
+            canPossess = true;
     }
     public void stopPossess(){
-    	canPossess = false;
+            canPossess = false;
     }
     
     public Image getCurrent(){
-    	return current;
+            return current;
     }
 
     public int getCenterX() {
@@ -273,12 +299,16 @@ public class Person {
 
     public Person enable() {
         isActive = true;
+        speedY = 0;
+        speedX = 0;
         return this;
     }
     
     public void disable(){
-    	isActive = false;
-    	canPossess = false;
+            isActive = false;
+            canPossess = false;
+            speedY = 0;
+            speedX = 0;
     }
 
     public boolean isMovingUp() {
@@ -298,14 +328,14 @@ public class Person {
     }
  
     public boolean getPossess(){
-    	return canPossess;
+            return canPossess;
     }
     
     public int getRadius(){
-    	return radius;
+            return radius;
     }
     
     public boolean active(){
-    	return isActive;
+            return isActive;
     }
 }
