@@ -23,18 +23,8 @@ public class Tile {
 
 		r = new Rectangle();
 
-		if (type == 5) {
-			tileImage = MainClass.tilegrassTop;
-		} else if (type == 8) {
-			tileImage = MainClass.tilegrassTop;
-		} else if (type == 4) {
-			tileImage = MainClass.tilegrassLeft;
-
-		} else if (type == 6) {
-			tileImage = MainClass.tilegrassRight;
-
-		} else if (type == 2) {
-			tileImage = MainClass.tilegrassBot;
+		if (type == 1) {
+			tileImage = MainClass.tileWall;
 		} else {
 			type = 0;
 		}
