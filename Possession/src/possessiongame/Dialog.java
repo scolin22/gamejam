@@ -1,8 +1,6 @@
 package possessiongame;
 
 import java.awt.Image;
-import java.awt.Rectangle;
-import java.net.URL;
 import java.awt.Graphics;
 
 public class Dialog {
