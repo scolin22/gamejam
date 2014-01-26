@@ -7,7 +7,7 @@ public class Background {
 	private int speedX;
 	private int speedY;
 	
-	private Player player = MainClass.getPlayer();
+	private Person player = MainClass.getPlayer();
 	
 	public Background(int x, int y) {
 		bgX = x;
@@ -17,9 +17,9 @@ public class Background {
 	}
 
 	public void update() {
-		
 		bgX += speedX;
 		bgY += speedY;
+        System.out.println(String.valueOf(bgX) + " " + String.valueOf(bgY));
 	}
 
 	public int getBgX() {

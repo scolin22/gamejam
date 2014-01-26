@@ -10,6 +10,8 @@ public class Tile {
 	private int tileX, tileY, speedX, speedY, type;
 	public Image tileImage;
 
+	private Person player = MainClass.getPlayer();
+
 	private Background bg = MainClass.getBg();
 	private Rectangle r;
 
@@ -22,7 +24,7 @@ public class Tile {
 		r = new Rectangle();
 
 		if (type == 5) {
-			tileImage = MainClass.tiledirt;
+			tileImage = MainClass.tilegrassTop;
 		} else if (type == 8) {
 			tileImage = MainClass.tilegrassTop;
 		} else if (type == 4) {

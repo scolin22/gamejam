@@ -1,8 +1,6 @@
 
 package possessiongame;
 
-import possessiongame.framework.Animation;
-
 import java.applet.Applet;
 import java.awt.Color;
 import java.awt.Frame;
@@ -13,7 +11,6 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
@@ -37,19 +34,14 @@ public class MainClass extends Applet implements Runnable, KeyListener {
     public final static int speechtext_OffsetX = 10;
     public final static int speechtext_OffsetY = -30;
 
-    private static Player player;
-    
-    private Image image, currentSprite, character, background, character_backwards,
-	    character_left, character_right, character2, character_backwards2,
-	    character_left2, character_right2, character3, character_backwards3,
-	    character_left3, character_right3;
-    
+    private static Person currentPerson;
+	private Person trainer;
+	private Person grunt;
+    private Image image, background;
+
     private Dialog dialog;
 
-    public static Image tilegrassTop, tilegrassBot, tilegrassLeft,
-            tilegrassRight, tiledirt;
-    
-    private Animation charAnim, char_backwardsAnim, char_leftAnim, char_rightAnim;
+    public static Image tilegrassTop, tilegrassBot, tilegrassLeft, tilegrassRight;
 
     //private Animation charAnim, char_backwardsAnim, char_leftAnim, char_rightAnim;
     
@@ -77,15 +69,18 @@ public class MainClass extends Applet implements Runnable, KeyListener {
         }
 
         // Image Setups
+        BufferedImage charImg = null;
+
         dialog = new Dialog(getImage(base, "data/small_speech.jpg"));
 
-        BufferedImage bigImg = null;
 		try {
-			bigImg = ImageIO.read(new File("data/TrainerSpriteSheet.png"));
+			charImg = ImageIO.read(new File("data/personSpriteSheet.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+        bg = new Background(0, 0);
 	     // The above line throws an checked IOException which must be caught.
 		
 		try {
@@ -106,64 +101,43 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 	         e.printStackTrace();
 	      }
 		
-		character_backwards = bigImg.getSubimage( 0, 0, 14, 19 );
-		character_backwards2 = bigImg.getSubimage( 14, 0, 15, 19 );
-		character_backwards3 = bigImg.getSubimage( 29, 0, 15, 19 );
-		
-		character_left = bigImg.getSubimage( 44, 0, 14, 19 );
-		character_left2 = bigImg.getSubimage( 58, 0, 14, 19 );
-		character_left3 = bigImg.getSubimage( 72, 0, 14, 19 );
-		
-		character = bigImg.getSubimage( 86, 0, 14, 19 );
-		character2 = bigImg.getSubimage( 100, 0, 14, 19 );
-		character3 = bigImg.getSubimage( 114, 0, 14, 19 );
-		
-		character_right = bigImg.getSubimage( 128, 0, 14, 19 );
-		character_right2 = bigImg.getSubimage( 142, 0, 14, 19 );
-		character_right3 = bigImg.getSubimage( 156, 0, 14, 19 );
 
-        currentSprite = character;
+		trainer = new Person(charImg.getSubimage( 130, 0, 16, 19 ), charImg.getSubimage( 146, 0, 15, 19 ),
+					     	 charImg.getSubimage( 161, 0, 15, 19 ), charImg.getSubimage( 0, 0, 16, 19 ),
+					     	 charImg.getSubimage( 16, 0, 15, 19 ), charImg.getSubimage( 31, 0, 15, 19 ),
+					    	 charImg.getSubimage( 46, 0, 14, 19 ), charImg.getSubimage( 60, 0, 14, 19 ),
+					    	 charImg.getSubimage( 74, 0, 14, 19 ), charImg.getSubimage( 88, 0, 14, 19 ),
+					    	 charImg.getSubimage( 102, 0, 14, 19 ), charImg.getSubimage( 116, 0, 14, 19 ), 
+					    	 true, 100, 377);
+		
+		grunt = new Person(charImg.getSubimage( 130, 20, 16, 19 ), charImg.getSubimage( 146, 20, 15, 19 ),
+		     	 		   charImg.getSubimage( 161, 20, 15, 19 ), charImg.getSubimage( 0, 20, 16, 19 ),
+					       charImg.getSubimage( 16, 20, 15, 19 ), charImg.getSubimage( 31, 20, 15, 19 ),
+					       charImg.getSubimage( 46, 20, 14, 19 ), charImg.getSubimage( 60, 20, 14, 19 ),
+					       charImg.getSubimage( 74, 20, 14, 19 ), charImg.getSubimage( 88, 20, 14, 19 ),
+					       charImg.getSubimage( 102, 20, 14, 19 ), charImg.getSubimage( 116, 20, 14, 19 ), 
+					       false, 100, 100);
+		
         background = getImage(base, "data/background2.jpg");
         
-        tiledirt = getImage(base, "data/tiledirt.png");
-        tilegrassTop = getImage(base, "data/tilegrasstop.png");
-        tilegrassBot = getImage(base, "data/tilegrassbot.png");
-        tilegrassLeft = getImage(base, "data/tilegrassleft.png");
-        tilegrassRight = getImage(base, "data/tilegrassright.png");
+        BufferedImage tileImg = null;
+		try {
+			tileImg = ImageIO.read(new File("data/tile.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	     // The above line throws an checked IOException which must be caught.
         
-        
-        charAnim = new Animation();
-        charAnim.addFrame(character, 75);
-        charAnim.addFrame(character2, 75);
-        charAnim.addFrame(character, 75);
-        charAnim.addFrame(character3, 75);
-		
-        char_rightAnim = new Animation();
-        char_rightAnim.addFrame(character_right, 75);
-        char_rightAnim.addFrame(character_right2, 75);
-        char_rightAnim.addFrame(character_right, 75);
-        char_rightAnim.addFrame(character_right3, 75);
-        
-        char_backwardsAnim = new Animation();
-        char_backwardsAnim.addFrame(character_backwards, 75);
-        char_backwardsAnim.addFrame(character_backwards2, 75);
-        char_backwardsAnim.addFrame(character_backwards, 75);
-        char_backwardsAnim.addFrame(character_backwards3, 75);
-        
-        char_leftAnim = new Animation();
-        char_leftAnim.addFrame(character_left, 75);
-        char_leftAnim.addFrame(character_left2, 75);
-        char_leftAnim.addFrame(character_left, 75);
-        char_leftAnim.addFrame(character_left3, 75);
-		
-		currentSprite = charAnim.getImage();
+        tilegrassTop = tileImg.getSubimage( 0, 0, 40, 40 );
+        tilegrassBot = tileImg.getSubimage( 0, 80, 40, 40 );
+        tilegrassLeft = tileImg.getSubimage( 0, 40, 40, 40 );
+        tilegrassRight = tileImg.getSubimage( 40, 40, 40, 40 );
     }
 
     @Override
     public void start() {
-        bg = new Background(0, 0);
-        player = new Player();
-        
+        currentPerson = trainer;
 
         // Initialize Tiles
         try {
@@ -228,7 +202,8 @@ public class MainClass extends Applet implements Runnable, KeyListener {
     @Override
     public void run() {
         while (true) {
-            player.update();
+            grunt.update();
+            trainer.update();
             
             updateTiles();
             bg.update();
@@ -243,10 +218,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
     }
     
     public void animate() {
-		charAnim.update(10);
-		char_leftAnim.update(10);
-		char_rightAnim.update(10);
-		char_backwardsAnim.update(10);
+		currentPerson.animate(10);
 	}
     
     @Override
@@ -267,18 +239,29 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 
     @Override
     public void paint(Graphics g) {
+        
         g.drawImage(background, bg.getBgX(), bg.getBgY(), this);
         paintTiles(g);
 
-        g.drawImage(currentSprite, player.getCenterX(), player.getCenterY(), this);
-
+        g.drawRect((int) grunt.rect.getX(), (int) grunt.rect.getY(),
+                (int) grunt.rect.getWidth(), (int) grunt.rect.getHeight());
+        
+        g.drawImage(grunt.getCurrent(), grunt.getCenterX(),
+        		grunt.getCenterY(), this);
+        
+        g.drawRect((int) trainer.rect.getX(), (int) trainer.rect.getY(),
+                (int) trainer.rect.getWidth(), (int) trainer.rect.getHeight());
+        
+        g.drawImage(trainer.getCurrent(), trainer.getCenterX(),
+        		trainer.getCenterY(), this);
         
         outputDialog(dialog, g);
+
     }
     
     private void outputDialog(Dialog dialog, Graphics g){
-    	g.drawImage(dialog.getDialog_background(), player.getCenterX() + speech_OffsetX, player.getCenterY() + speech_OffsetY, this);
-		g.drawString(dialog.outputDialog(), player.getCenterX() + speechtext_OffsetX, player.getCenterY() + speechtext_OffsetY);
+    	g.drawImage(dialog.getDialog_background(), currentPerson.getCenterX() + speech_OffsetX, currentPerson.getCenterY() + speech_OffsetY, this);
+		g.drawString(dialog.outputDialog(), currentPerson.getCenterX() + speechtext_OffsetX, currentPerson.getCenterY() + speechtext_OffsetY);
     }
     
     private void updateTiles() {
@@ -303,27 +286,23 @@ public class MainClass extends Applet implements Runnable, KeyListener {
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_UP:
-                currentSprite = charAnim.getImage();
-                player.startUp();
+                currentPerson.startUp();
                 break;
 
             case KeyEvent.VK_DOWN:
-                currentSprite = char_backwardsAnim.getImage();
-                player.startDown();
+                currentPerson.startDown();
                 break;
 
             case KeyEvent.VK_LEFT:
-                currentSprite = char_leftAnim.getImage();
-                player.startLeft();
+                currentPerson.startLeft();
                 break;
 
             case KeyEvent.VK_RIGHT:
-                currentSprite = char_rightAnim.getImage();
-                player.startRight();
+                currentPerson.startRight();
                 break;
 
             case KeyEvent.VK_SPACE:
-                //player.jump();
+                currentPerson = grunt.enable();
                 break;
         }
     }
@@ -332,19 +311,19 @@ public class MainClass extends Applet implements Runnable, KeyListener {
     public void keyReleased(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_UP:
-                player.stopUp();
+                currentPerson.stopUp();
                 break;
 
             case KeyEvent.VK_DOWN:
-                player.stopDown();
+            	currentPerson.stopDown();
                 break;
 
             case KeyEvent.VK_LEFT:
-                player.stopLeft();
+            	currentPerson.stopLeft();
                 break;
 
             case KeyEvent.VK_RIGHT:
-                player.stopRight();
+            	currentPerson.stopRight();
                 break;
 
             case KeyEvent.VK_SPACE:
@@ -362,8 +341,8 @@ public class MainClass extends Applet implements Runnable, KeyListener {
         return bg;
     }
 
-    public static Player getPlayer() {
-        return player;
+    public static Person getPlayer() {
+        return currentPerson;
     }
     
     public Image getImageResource(URL base, String location){
