@@ -65,7 +65,7 @@ public class Person {
         this.anims = anims;
     	current = anims.getFront().getImage();
     	
-    	//allowedTiles.add('a');
+    	allowedTiles.add('a');
     	allowedTiles.add(' ');
     	allowedTiles.add('0');
 
@@ -193,22 +193,22 @@ public class Person {
 
     public void stopUp() {
         movingUp = false;
-        speedY += MOVESPEED;
+        speedY = 0;
     }
 
     public void stopDown() {
         movingDown = false;
-        speedY -= MOVESPEED;
+        speedY = 0;
     }
 
     public void stopRight() {
         movingRight = false;
-        speedX -= MOVESPEED;
+        speedX = 0;
     }
 
     public void stopLeft() {
         movingLeft = false;
-        speedX += MOVESPEED;
+        speedX = 0;
     }
 
     public void startUp() {
@@ -296,8 +296,8 @@ public class Person {
 
     public Person enable() {
         isActive = true;
-        speedY = 0;
-        speedX = 0;
+        this.setSpeedY(0);
+        this.setSpeedX(0);
         return this;
     }
     

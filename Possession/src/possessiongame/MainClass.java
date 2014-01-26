@@ -283,8 +283,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
                     if (!cur.active()) {
                         int x = cur.getCenterX();
                         int y = cur.getCenterY();
-                        double min = Math.sqrt((x - x_cur) * (x - x_cur) + (y - y_cur)
-                                * (y - y_cur));
+                        double min = Math.sqrt((x - x_cur) * (x - x_cur) + (y - y_cur) * (y - y_cur));
                         if (min < rad) {
                             index = i;
                             rad = min;
