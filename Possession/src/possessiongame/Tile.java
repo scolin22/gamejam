@@ -9,7 +9,7 @@ public class Tile {
 	private int tileX, tileY, speedX, speedY, type, safeY, safeX;
 	public Image tileImage;
 
-	private Player player = MainClass.getPlayer();
+	private Person player = MainClass.getPlayer();
 	private Background bg = MainClass.getBg();
 	private Rectangle r;
 
@@ -22,7 +22,7 @@ public class Tile {
 		r = new Rectangle();
 
 		if (type == 5) {
-			tileImage = MainClass.tiledirt;
+			tileImage = MainClass.tilegrassTop;
 		} else if (type == 8) {
 			tileImage = MainClass.tilegrassTop;
 		} else if (type == 4) {
@@ -48,7 +48,7 @@ public class Tile {
 
 		r.setBounds(tileX, tileY, 40, 40);
 
-		if (r.intersects(Player.rect) && type != 0) {
+		if (r.intersects(Person.rect) && type != 0) {
 		    player.setCenterX(safeX);
 		    player.setCenterY(safeY);
 		} else {
