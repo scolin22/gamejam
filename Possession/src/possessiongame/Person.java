@@ -1,12 +1,14 @@
 
 package possessiongame;
 
-import possessiongame.framework.PersonAnim;
 
+import possessiongame.framework.PersonAnim;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+
+import possessiongame.framework.Animation;
 
 public class Person {
 
@@ -45,12 +47,33 @@ public class Person {
     private int paranoia = 0;
     
     private ArrayList<String> inventory = new ArrayList<String>();
-    public Person( boolean active, int x, int y, PersonAnim anims ){
-    	this.anims = anims;
-    	isActive = active;
-    	centerX = x;
-    	centerY = y;
+
+    private ArrayList<String> dialog = new ArrayList<String>();
+    public String outputMessage;
+    private long ticks = 0;
+    private int mIndex = 0;
+    
+    private ArrayList<Character> allowedTiles = new ArrayList<Character>();
+
+    public Person( boolean isActive, int startX, int startY, PersonAnim anims, ArrayList<String> d) {
+        
+        if (d != null) {
+            dialog = d;
+        } else {
+            dialog = null;
+        }
+        this.anims = anims;
     	current = anims.getFront().getImage();
+    	
+    	//allowedTiles.add('a');
+    	allowedTiles.add(' ');
+    	allowedTiles.add('0');
+
+       
+
+        this.isActive = isActive;
+        centerX = startX;
+        centerY = startY;
     }
     public void setActive(boolean flag) {
         isActive = flag;
@@ -63,9 +86,23 @@ public class Person {
         if (!isActive) {
             centerX += bg.getSpeedX();
             centerY += bg.getSpeedY();
+            if (dialog != null) {
+                if (System.currentTimeMillis() - ticks > 3000) {
+                    outputMessage = dialog.get(mIndex);
+                    mIndex++;
+                    if (mIndex >= dialog.size()) {
+                        mIndex = 0;
+                    }
+                    ticks = System.currentTimeMillis();
+                } else if (System.currentTimeMillis() - ticks > 2500) {
+                    outputMessage = null;
+                }
+            }
             return;
         }
 
+        outputMessage = null;
+        
         centerX += speedX;
         if (checkCollision()) {
             centerX -= speedX;
@@ -119,18 +156,16 @@ public class Person {
     	
         if (centerX < 0 || centerY < 0) {
             return true;
-        } else if (MainClass.getTileType(centerX - bg.getBgX(), centerY - bg.getBgY()) != '0') {
+        } else if(!this.allowedTile(MainClass.getTileType(centerX - bg.getBgX(), centerY - bg.getBgY()))){
         	return true;
-        } else if (MainClass.getTileType(centerX - bg.getBgX(), centerY + height - bg.getBgY()) != '0') {
-            return true;
-        } else if (MainClass.getTileType(centerX + width - bg.getBgX(), centerY - bg.getBgY()) != '0') {
-            return true;
-        } else if (MainClass.getTileType(centerX + width - bg.getBgX(),
-                centerY + height - bg.getBgY()) != '0') {
-            return true;
-        } else {
-            return false;
-        }
+        } else if(!this.allowedTile(MainClass.getTileType(centerX - bg.getBgX(), centerY + height - bg.getBgY()))){
+        	return true;
+        } else if(!this.allowedTile(MainClass.getTileType(centerX + width - bg.getBgX(), centerY - bg.getBgY()))){
+        	return true;
+        } else if(!this.allowedTile(MainClass.getTileType(centerX + width - bg.getBgX(), centerY + height - bg.getBgY()))){
+        	return true;
+        } 
+        return false;
     }
     
     private void displayInventory(Graphics g) {
@@ -300,10 +335,25 @@ public class Person {
     public boolean active(){
             return isActive;
     }
+
 	public void animate(int i) {
 		anims.getFront().update(i);
 		anims.getBack().update(i);
 		anims.getRight().update(i);
 		anims.getLeft().update(i);
 	}
+
+    
+    public boolean allowedTile(char tile){
+    	boolean allowed = false;
+    	for(int i = 0; i < allowedTiles.size(); i++){
+    		if(tile == allowedTiles.get(i)){
+    			System.out.println(allowedTiles.get(i));
+    			allowed = true;
+    			break;
+    		}
+    	}
+    	//System.out.println(allowed);
+    	return allowed;
+    }
 }

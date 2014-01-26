@@ -31,18 +31,21 @@ public class MainClass extends Applet implements Runnable, KeyListener {
     public final static int INVENTORY_Y = 500;
 
     // Relative Positioning of Speech Bubble to Player
-    public final static int speech_OffsetX = 20;
-    public final static int speech_OffsetY = -60;
-    public final static int speechtext_OffsetX = 10;
+    public final static int speech_OffsetX = 10;
+    public final static int speech_OffsetY = 0;
+    public final static int speechtext_OffsetX = -25;
     public final static int speechtext_OffsetY = -30;
 
     private static Person currentPerson;
     private ArrayList<Person> People;
     private Person player, security, employee1, employee2, secretary;
     private Image image, background, inventory;
+
     private static PersonAnim playerAnims, securityAnims, employeeAnims, secretaryAnims;
 
-    private Dialog dialog;
+    public static Image dialog_image;
+
+    //private Dialog dialog;
 
     public static Image wall, doorV, doorH, deskHL, deskHR, deskHC, deskVT, deskVB, deskVC, chairL,
             chairR, safe, cameraOR, cameraOL, cameraXR, cameraXL, computer, garbage;
@@ -73,13 +76,13 @@ public class MainClass extends Applet implements Runnable, KeyListener {
             // TODO: handle exception
         }
 
-        dialog = new Dialog(getImage(base, "data/small_speech.jpg"));
+        //dialog = new Dialog(getImage(base, "data/small_speech.jpg"));
 
         bg = new Background(0, 0);
 
         try {
             // Open an audio input stream.
-            URL url = this.getClass().getClassLoader().getResource("data/PossessionMain2.wav");
+            URL url = this.getClass().getClassLoader().getResource("data/Rest for the Wicked.wav");
             AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
             // Get a sound clip resource.
             Clip clip = AudioSystem.getClip();
@@ -99,6 +102,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 
         background = getImage(base, "data/background.jpg");
         inventory = getImage(base, "data/inventory.png");
+        dialog_image = getImage(base, "data/small_speech.jpg");
 
         BufferedImage tileImg = null;
         try {
@@ -124,8 +128,8 @@ public class MainClass extends Applet implements Runnable, KeyListener {
         deskHL = tileImg.getSubimage(25, 25, 25, 25);
         deskHR = tileImg.getSubimage(0, 25, 25, 25);
         deskHC = tileImg.getSubimage(25, 0, 25, 25);
-        chairL = tileImg.getSubimage(0, 75, 9, 15);
-        chairR = tileImg.getSubimage(13, 75, 9, 15);
+        chairL = tileImg.getSubimage(6, 97, 18, 25);
+        chairR = tileImg.getSubimage(28, 97, 18, 25);
         safe = tileImg.getSubimage(0, 50, 25, 25);
         cameraOR = tileImg.getSubimage(25, 50, 25, 20);
         cameraOL = tileImg.getSubimage(75, 50, 25, 20);
@@ -137,6 +141,9 @@ public class MainClass extends Applet implements Runnable, KeyListener {
     }
 
     private void initCharacters() {
+        
+        ArrayList<String> security_dialog;
+        
         BufferedImage charImg = null;
         try {
             charImg = ImageIO.read(new File("data/personSpriteSheet.png"));
@@ -144,6 +151,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+
 
         playerAnims = new PersonAnim(charImg.getSubimage(130, 0, 16, 21),charImg.getSubimage(146, 0, 15, 21),
                 charImg.getSubimage(161, 0, 15, 21), charImg.getSubimage(0, 0, 16, 21),
@@ -173,12 +181,17 @@ public class MainClass extends Applet implements Runnable, KeyListener {
                 charImg.getSubimage(46, 63, 14, 21), charImg.getSubimage(60, 63, 14, 21),
                 charImg.getSubimage(74, 63, 14, 21), charImg.getSubimage(161, 63, 15, 21) );
         
+        security_dialog = new ArrayList<String>();
+        security_dialog.add("I am a security guard.");
+        security_dialog.add("Good thing the camera is on.");
+        security_dialog.add("Otherwise, someone could steal money.");
+        security_dialog.add("From the safe.");
         
-        player = new Person( true, 550, 300, playerAnims );
-        security = new Person( false, 275, 300, securityAnims );
-        employee1 = new Person( false, 275, 100, employeeAnims );
-        employee2 = new Person( false, 275, 200, employeeAnims );
-        secretary = new Person( false, 275, 400, secretaryAnims );
+        player = new Person( true, 550, 300, playerAnims, null );
+        security = new Person( false, 275, 300, securityAnims, security_dialog );
+        employee1 = new Person( false, 275, 100, employeeAnims, null );
+        employee2 = new Person( false, 275, 200, employeeAnims, null );
+        secretary = new Person( false, 275, 400, secretaryAnims, null );
         
         People = new ArrayList<Person>();
         People.add(security);
@@ -328,15 +341,17 @@ public class MainClass extends Applet implements Runnable, KeyListener {
         	g.drawImage(People.get(i).getCurrent(), People.get(i).getCenterX(),People.get(i).getCenterY(), this);
         }
 
-        outputDialog(dialog, g);
+        outputDialog(g, security);
 
     }
 
-    private void outputDialog(Dialog dialog, Graphics g) {
-        // g.drawImage(dialog.getDialog_background(), currentPerson.getCenterX()
-        // + speech_OffsetX, currentPerson.getCenterY() + speech_OffsetY, this);
-        // g.drawString(dialog.outputDialog(), currentPerson.getCenterX() +
-        // speechtext_OffsetX, currentPerson.getCenterY() + speechtext_OffsetY);
+    private void outputDialog(Graphics g, Person p) {
+        if (p.outputMessage != null) {
+            int y = p.getCenterY() + speech_OffsetY;
+            
+            g.drawString(p.outputMessage, p.getCenterX() + speechtext_OffsetX,
+                    y);
+        }
     }
 
     private void updateTiles() {
@@ -425,14 +440,14 @@ public class MainClass extends Applet implements Runnable, KeyListener {
         return image;
     }
 
-    public static int getTileType(int x, int y) {
+    public static char getTileType(int x, int y) {
         x = x / Tile.TILE_SIZE;
         y = y / Tile.TILE_SIZE;
         if (x >= width || y >= height) {
-            return 1;
+            return '1';
         } else {
-            return tiles[y][x].getTileType();
+            return  tiles[y][x].getTileType();
         }
     }
-
+    
 }
