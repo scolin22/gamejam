@@ -35,6 +35,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
     public final static int speechtext_OffsetY = -30;
 
     private static Person currentPerson;
+    private ArrayList<Person> People;
 	private Person trainer;
 	private Person grunt;
     private Image image, background;
@@ -119,6 +120,11 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 					       false, 100, 100);
 		
         background = getImage(base, "data/background.jpg");
+
+		People = new ArrayList<Person>();
+		People.add( grunt );
+		People.add( trainer );
+		currentPerson = trainer;
         
         BufferedImage tileImg = null;
 		try {
@@ -134,8 +140,6 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 
     @Override
     public void start() {
-        currentPerson = trainer;
-
         // Initialize Tiles
         try {
             loadMap("data/map2.txt");
@@ -202,6 +206,30 @@ public class MainClass extends Applet implements Runnable, KeyListener {
             grunt.update();
             trainer.update();
             
+            if( currentPerson.getPossess() ){
+            	int x_cur = currentPerson.getCenterX();
+            	int y_cur = currentPerson.getCenterY();
+            	double rad = currentPerson.getRadius();
+            	int index = -1;
+            	for( int i = 0; i < People.size(); i++ ){
+            		Person cur = People.get(i);
+            		if( !cur.active() ){
+            			int x = cur.getCenterX();
+                    	int y = cur.getCenterY();
+                    	double min = Math.sqrt(( x - x_cur )*( x - x_cur ) + ( y - y_cur )*( y - y_cur ));
+                    	if( min < rad ){
+                    		index = i;
+                    		rad = min;
+                    	}
+            		}
+            	}
+            	if( index != -1 ){
+            		currentPerson.disable();
+            		currentPerson = (People.get(index)).enable();
+            	}else{
+            		currentPerson.stopPossess();
+            	}
+            }
             updateTiles();
             bg.update();
             animate();
@@ -299,7 +327,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
                 break;
 
             case KeyEvent.VK_SPACE:
-                currentPerson = grunt.enable();
+                currentPerson.startPossess();
                 break;
         }
     }
