@@ -273,12 +273,16 @@ public class Person {
 
     public Person enable() {
         isActive = true;
+        speedY = 0;
+        speedX = 0;
         return this;
     }
     
     public void disable(){
     	isActive = false;
     	canPossess = false;
+    	speedY = 0;
+    	speedX = 0;
     }
 
     public boolean isMovingUp() {
