@@ -10,6 +10,8 @@ public class Player {
 
     private int centerX = 100;
     private int centerY = 377;
+    private int width = 25;
+    private int height = 35;
     final int offset = 60;
 
     private boolean movingLeft = false;
@@ -26,31 +28,75 @@ public class Player {
     public static Rectangle rect = new Rectangle(0, 0, 0, 0);
 
     public void update() {
+        
 
         centerX += speedX;
+        if (checkCollision()) {
+            centerX -= speedX;
+            bg.setSpeedX(0);
+        } else {
+            if (speedX == 0) {
+                bg.setSpeedX(0);
+            } else if (bg.getBgX() > 0) {
+                bg.setSpeedX(0);
+            } else {
+                if (bg.getBgX() < 0) {
+                    if (speedX < 0 && centerX < MainClass.SCREEN_WIDTH / 2 - offset) {
+                        centerX -= speedX;
+                        bg.setSpeedX(+MOVESPEED);
+                    }
+                }
+                if (bg.getBgX() > -100000){
+                    if (speedX > 0 && centerX > MainClass.SCREEN_WIDTH / 2 + offset) {
+                        centerX -= speedX;
+                        bg.setSpeedX(-MOVESPEED);
+                    }
+                }
+            }
+        }
 
         centerY += speedY;
+        if (checkCollision()) {
+            centerY -= speedY;
+            bg.setSpeedY(0);
+        } else {
+            if (speedY == 0) {
+                bg.setSpeedY(0);
+            } else if (bg.getBgY() > 0) {
+                bg.setSpeedY(0);
+            } else {
+                if (bg.getBgY() > 0) {
+                    if (speedY > 0 && centerY > MainClass.SCREEN_HEIGHT / 2 + offset) {
+                        centerY -= speedY;
+                        bg.setSpeedY(-MOVESPEED);
+                    } else if (speedY < 0 && centerY < MainClass.SCREEN_HEIGHT / 2 - offset) {
+                        centerY -= speedY;
+                        bg.setSpeedY(+MOVESPEED);
+                    } else if (speedY == 0) {
+                        centerY -= speedY;
+                        bg.setSpeedY(0);
+                    }
+                }
+            }
+        }
         
-        if (speedX == 0) {
-            bg.setSpeedX(0);
+        rect.setRect(centerX, centerY, width, height);
+    }
+    
+    private boolean checkCollision () {
+        if (centerX < 0 || centerY < 0) {
+            return true;
+        } else if (MainClass.getTileType(centerX - bg.getBgX(), centerY - bg.getBgY()) != 0) {
+            return true;
+        } else if (MainClass.getTileType(centerX - bg.getBgX(), centerY+height - bg.getBgY()) != 0) {
+            return true;
+        } else if (MainClass.getTileType(centerX+width - bg.getBgX(), centerY - bg.getBgY()) != 0) {
+            return true;
+        } else if (MainClass.getTileType(centerX+width - bg.getBgX(), centerY+height - bg.getBgY()) != 0) {
+            return true;
+        } else {
+            return false;
         }
-        if (speedY == 0) {
-            bg.setSpeedX(0);
-        }
-        if (speedX > 0 && centerX > MainClass.SCREEN_WIDTH / 2 + offset) {
-            bg.setSpeedX(-MOVESPEED);
-        }
-        if (speedX < 0 && centerX < MainClass.SCREEN_WIDTH / 2 - offset) {
-            bg.setSpeedX(+MOVESPEED);
-        }
-        if (speedY > 0 && centerY > MainClass.SCREEN_HEIGHT / 2 + offset) {
-            bg.setSpeedY(-MOVESPEED);
-        }
-        if (speedY < 0 && centerY < MainClass.SCREEN_HEIGHT / 2 - offset) {
-            bg.setSpeedY(+MOVESPEED);
-        }
-
-        rect.setRect(centerX, centerY, 27, 36);
     }
 
     public void stopUp() {

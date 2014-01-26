@@ -1,6 +1,8 @@
 
 package possessiongame;
 
+import possessiongame.framework.Animation;
+
 import java.applet.Applet;
 import java.awt.Color;
 import java.awt.Frame;
@@ -22,6 +24,12 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 
     public final static int SCREEN_WIDTH = 800;
     public final static int SCREEN_HEIGHT = 480;
+    
+    //Relative Positioning of Speech Bubble to Player
+    public final static int speech_OffsetX = 20;
+    public final static int speech_OffsetY = -60;
+    public final static int speechtext_OffsetX = 10;
+    public final static int speechtext_OffsetY = -30;
 
     private static Person currentPerson;
 	private Person trainer;
@@ -29,13 +37,19 @@ public class MainClass extends Applet implements Runnable, KeyListener {
     private Image image, background, front, front2, front3, 
     			  back, back2, back3, left, left2, left3, right, right2, right3;
 
+    private Dialog dialog;
+
     public static Image tilegrassTop, tilegrassBot, tilegrassLeft, tilegrassRight;
 
+    //private Animation charAnim, char_backwardsAnim, char_leftAnim, char_rightAnim;
+    
     private Graphics second;
-    private URL base;
+    public static URL base;
     private static Background bg;
 
-    private ArrayList<Tile> tilearray = new ArrayList<Tile>();
+    private static Tile[][] tiles;
+    private static int height = 0;
+    private static int width = 0;
 
     @Override
     public void init() {
@@ -54,6 +68,9 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 
         // Image Setups
         BufferedImage charImg = null;
+
+        dialog = new Dialog(getImage(base, "data/small_speech.jpg"));
+
 		try {
 			charImg = ImageIO.read(new File("data/personSpriteSheet.png"));
 		} catch (IOException e) {
@@ -100,12 +117,13 @@ public class MainClass extends Applet implements Runnable, KeyListener {
     @Override
     public void start() {
         currentPerson = trainer;
+        bg = new Background(0, 0);
 
         // Initialize Tiles
         try {
             loadMap("data/map1.txt");
+           
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -115,13 +133,10 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 
     private void loadMap(String filename) throws IOException {
         ArrayList lines = new ArrayList();
-        int width = 0;
-        int height = 0;
 
         BufferedReader reader = new BufferedReader(new FileReader(filename));
         while (true) {
             String line = reader.readLine();
-            // no more lines to read
             if (line == null) {
                 reader.close();
                 break;
@@ -134,16 +149,19 @@ public class MainClass extends Applet implements Runnable, KeyListener {
             }
         }
         height = lines.size();
+        
+        tiles = new Tile[height][width];
 
-        for (int j = 0; j < 12; j++) {
+        for (int j = 0; j < height; j++) {
             String line = (String) lines.get(j);
             for (int i = 0; i < width; i++) {
-                //System.out.println(i + "is i ");
-
                 if (i < line.length()) {
                     char ch = line.charAt(i);
                     Tile t = new Tile(i, j, Character.getNumericValue(ch));
-                    tilearray.add(t);
+                    tiles[j][i] = t;
+                } else {
+                    Tile t = new Tile(i, j, 0);
+                    tiles[j][i] = t;
                 }
 
             }
@@ -215,19 +233,29 @@ public class MainClass extends Applet implements Runnable, KeyListener {
         
         g.drawImage(trainer.getCurrent(), trainer.getCenterX(),
         		trainer.getCenterY(), this);
-    }
 
+    }
+    
+    private void outputDialog(Dialog dialog, Graphics g){
+    	g.drawImage(dialog.getDialog_background(), currentPerson.getCenterX() + speech_OffsetX, currentPerson.getCenterY() + speech_OffsetY, this);
+		g.drawString(dialog.outputDialog(), currentPerson.getCenterX() + speechtext_OffsetX, currentPerson.getCenterY() + speechtext_OffsetY);
+    }
+    
     private void updateTiles() {
-        for (int i = 0; i < tilearray.size(); i++) {
-            Tile t = (Tile) tilearray.get(i);
-            t.update();
+        for (int j = 0; j < height; j++) {
+            for (int i = 0; i < width; i++) {
+                Tile t = (Tile) tiles[j][i];
+                t.update();
+            }
         }
     }
 
     private void paintTiles(Graphics g) {
-        for (int i = 0; i < tilearray.size(); i++) {
-            Tile t = (Tile) tilearray.get(i);
-            g.drawImage(t.getTileImage(), t.getTileX(), t.getTileY(), this);
+        for (int j = 0; j < height; j++) {
+            for (int i = 0; i < width; i++) {
+                Tile t = (Tile) tiles[j][i];
+                g.drawImage(t.getTileImage(), t.getTileX(), t.getTileY(), this);
+            }
         }
     }
 
@@ -292,6 +320,21 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 
     public static Person getPlayer() {
         return currentPerson;
+    }
+    
+    public Image getImageResource(URL base, String location){
+    	Image image = getImage(base, location);
+    	return image;
+	}
+    
+    public static int getTileType(int x, int y) {
+        x = x / Tile.TILE_SIZE;
+        y = y / Tile.TILE_SIZE;
+        if (x >= width || y >= height) {
+            return 1;
+        } else {
+            return tiles[y][x].getTileType();
+        }
     }
 
 }
