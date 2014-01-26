@@ -5,7 +5,7 @@ import java.awt.Rectangle;
 
 public class Tile {
 	
-    public static final int TILE_SIZE = 40;
+    public static final int TILE_SIZE = 25;
 	
 	private int tileX, tileY, speedX, speedY, type;
 	public Image tileImage;

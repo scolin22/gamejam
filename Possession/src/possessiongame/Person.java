@@ -13,8 +13,8 @@ public class Person {
 
     private int centerX;
     private int centerY;
-    private int width = 25;
-    private int height = 35;
+    private int width = 16;
+    private int height = 19;
     private int radius = 50;
     final int offset = 60;
 
