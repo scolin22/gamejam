@@ -15,7 +15,7 @@ public class Person {
     private int centerY = 377;
     private int width = 25;
     private int height = 35;
-    private int radius = 20;
+    private int radius = 50;
     final int offset = 60;
 
     private boolean movingLeft = false;
@@ -228,8 +228,11 @@ public class Person {
         }
     }
 
-    public void possess(){
+    public void startPossess(){
     	canPossess = true;
+    }
+    public void stopPossess(){
+    	canPossess = false;
     }
     
     public Image getCurrent(){
@@ -269,14 +272,13 @@ public class Person {
     }
 
     public Person enable() {
-        this.isActive = true;
+        isActive = true;
         return this;
     }
     
     public void disable(){
-    	this.isActive = false;
+    	isActive = false;
     	canPossess = false;
-
     }
 
     public boolean isMovingUp() {

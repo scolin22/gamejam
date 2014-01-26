@@ -227,6 +227,8 @@ public class MainClass extends Applet implements Runnable, KeyListener {
             	if( index != -1 ){
             		currentPerson.disable();
             		currentPerson = (People.get(index)).enable();
+            	}else{
+            		currentPerson.stopPossess();
             	}
             }
             updateTiles();
@@ -326,7 +328,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
                 break;
 
             case KeyEvent.VK_SPACE:
-                currentPerson.possess();
+                currentPerson.startPossess();
                 break;
         }
     }
