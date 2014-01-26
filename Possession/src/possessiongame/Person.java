@@ -1,3 +1,4 @@
+
 package possessiongame;
 
 import java.awt.Image;
@@ -6,8 +7,8 @@ import java.awt.Rectangle;
 import possessiongame.framework.Animation;
 
 public class Person {
-	
-	// Constants are Here
+
+    // Constants are Here
     final int MOVESPEED = 2;
 
     private int centerX = 100;
@@ -25,102 +26,99 @@ public class Person {
 
     private int speedX = 0;
     private int speedY = 0;
-    
-    //back - seen while moving down
-    //front - seen while moving up
-    //left - seen while moving left
-    //right - seen while moving right
-    
-	private Image current;
-	
-	private boolean isActive;
-	
-	private Animation frontAnim, backAnim, leftAnim, rightAnim;
-	
-	private int paranoia;
-	
-	public Person(Image front, Image front2, Image front3, 
-				  Image back, Image back2, Image back3, 
-				  Image left, Image left2, Image left3, 
-			      Image right, Image right2, Image right3, 
-			      boolean isActive, int startX, int startY) {
-		
-		frontAnim = new Animation();
-		frontAnim.addFrame(front, 75);
-		frontAnim.addFrame(front2, 75);
-		frontAnim.addFrame(front, 75);
-		frontAnim.addFrame(front3, 75);
-		
-		rightAnim = new Animation();
-		rightAnim.addFrame(right, 75);
-		rightAnim.addFrame(right2, 75);
-		rightAnim.addFrame(right, 75);
-		rightAnim.addFrame(right3, 75);
-        
+
+    // back - seen while moving down
+    // front - seen while moving up
+    // left - seen while moving left
+    // right - seen while moving right
+
+    private Image current;
+
+    private boolean isActive;
+
+    private Animation frontAnim, backAnim, leftAnim, rightAnim;
+
+    private int paranoia;
+
+    public Person(Image front, Image front2, Image front3,
+            Image back, Image back2, Image back3,
+            Image left, Image left2, Image left3,
+            Image right, Image right2, Image right3,
+            boolean isActive, int startX, int startY) {
+
+        frontAnim = new Animation();
+        frontAnim.addFrame(front, 75);
+        frontAnim.addFrame(front2, 75);
+        frontAnim.addFrame(front, 75);
+        frontAnim.addFrame(front3, 75);
+
+        rightAnim = new Animation();
+        rightAnim.addFrame(right, 75);
+        rightAnim.addFrame(right2, 75);
+        rightAnim.addFrame(right, 75);
+        rightAnim.addFrame(right3, 75);
+
         backAnim = new Animation();
         backAnim.addFrame(back, 75);
         backAnim.addFrame(back2, 75);
         backAnim.addFrame(back, 75);
         backAnim.addFrame(back3, 75);
-        
+
         leftAnim = new Animation();
         leftAnim.addFrame(left, 75);
         leftAnim.addFrame(left2, 75);
         leftAnim.addFrame(left, 75);
         leftAnim.addFrame(left3, 75);
-        
+
         this.isActive = isActive;
         centerX = startX;
         centerY = startY;
-        
+
         current = front;
-        
+
         paranoia = 0;
-	}
-	
-	public void animate( int speed ) {
-		frontAnim.update( speed );
-		backAnim.update( speed );
-		leftAnim.update( speed );
-		rightAnim.update( speed );
-	}
-	
-	public void setActive( boolean flag ) {
-		isActive = flag;
-	}
-	
-	// For Collision Detection
+    }
+
+    public void animate(int speed) {
+        frontAnim.update(speed);
+        backAnim.update(speed);
+        leftAnim.update(speed);
+        rightAnim.update(speed);
+    }
+
+    public void setActive(boolean flag) {
+        isActive = flag;
+    }
+
+    // For Collision Detection
     public static Rectangle rect = new Rectangle(0, 0, 0, 0);
 
     public void update() {
-    	if( !isActive ) {
-    		centerX += bg.getSpeedX();
-    	    centerY += bg.getSpeedY();
-    	    return;
-    	}
-    	
-    	centerX += speedX;
+        if (!isActive) {
+            centerX += bg.getSpeedX();
+            centerY += bg.getSpeedY();
+            return;
+        }
+
+        centerX += speedX;
         if (checkCollision()) {
             centerX -= speedX;
             bg.setSpeedX(0);
+        } else if (speedX == 0) {
+            bg.setSpeedX(0);
+        } else if (bg.getBgX() == 0 && speedX < 0) {
+            bg.setSpeedX(0);
         } else {
-            if (speedX == 0) {
-                bg.setSpeedX(0);
-            } else if (bg.getBgX() > 0) {
-                bg.setSpeedX(0);
-            } else {
-                if (bg.getBgX() < 0) {
-                    if (speedX < 0 && centerX < MainClass.SCREEN_WIDTH / 2 - offset) {
-
-                        centerX -= speedX;
-                        bg.setSpeedX(+MOVESPEED);
-                    }
+            if (bg.getBgX() < 0) {
+                if (speedX < 0 && centerX < MainClass.SCREEN_WIDTH / 2 - offset) {
+                    centerX -= speedX;
+                    bg.setSpeedX(+MOVESPEED);
                 }
-                if (bg.getBgX() > -100000){
-                    if (speedX > 0 && centerX > MainClass.SCREEN_WIDTH / 2 + offset) {
-                        centerX -= speedX;
-                        bg.setSpeedX(-MOVESPEED);
-                    }
+            }
+            if (bg.getBgX() > -100000) {
+                if (speedX > 0 && centerX > MainClass.SCREEN_WIDTH / 2 + offset) {
+                    centerX -= speedX;
+                    bg.setSpeedX(-MOVESPEED);
                 }
             }
         }
@@ -129,40 +127,39 @@ public class Person {
         if (checkCollision()) {
             centerY -= speedY;
             bg.setSpeedY(0);
+        } else if (speedY == 0) {
+            bg.setSpeedY(0);
+        } else if (bg.getBgY() == 0 && speedY < 0) {
+            bg.setSpeedY(0);
         } else {
-            if (speedY == 0) {
-                bg.setSpeedY(0);
-            } else if (bg.getBgY() > 0) {
-                bg.setSpeedY(0);
-            } else {
-                if (bg.getBgY() > 0) {
-                    if (speedY > 0 && centerY > MainClass.SCREEN_HEIGHT / 2 + offset) {
-                        centerY -= speedY;
-                        bg.setSpeedY(-MOVESPEED);
-                    } else if (speedY < 0 && centerY < MainClass.SCREEN_HEIGHT / 2 - offset) {
-                        centerY -= speedY;
-                        bg.setSpeedY(+MOVESPEED);
-                    } else if (speedY == 0) {
-                        centerY -= speedY;
-                        bg.setSpeedY(0);
-                    }
+            if (bg.getBgY() < 0) {
+                if (speedY < 0 && centerY < MainClass.SCREEN_HEIGHT / 2 - offset) {
+                    centerY -= speedY;
+                    bg.setSpeedY(+MOVESPEED);
+                }
+            }
+            if (bg.getBgY() > -100000) {
+                if (speedY > 0 && centerY > MainClass.SCREEN_HEIGHT / 2 + offset) {
+                    centerY -= speedY;
+                    bg.setSpeedY(-MOVESPEED);
                 }
             }
         }
 
         rect.setRect(centerX, centerY, width, height);
     }
-    
-    private boolean checkCollision () {
+
+    private boolean checkCollision() {
         if (centerX < 0 || centerY < 0) {
             return true;
         } else if (MainClass.getTileType(centerX - bg.getBgX(), centerY - bg.getBgY()) != 0) {
             return true;
-        } else if (MainClass.getTileType(centerX - bg.getBgX(), centerY+height - bg.getBgY()) != 0) {
+        } else if (MainClass.getTileType(centerX - bg.getBgX(), centerY + height - bg.getBgY()) != 0) {
             return true;
-        } else if (MainClass.getTileType(centerX+width - bg.getBgX(), centerY - bg.getBgY()) != 0) {
+        } else if (MainClass.getTileType(centerX + width - bg.getBgX(), centerY - bg.getBgY()) != 0) {
             return true;
-        } else if (MainClass.getTileType(centerX+width - bg.getBgX(), centerY+height - bg.getBgY()) != 0) {
+        } else if (MainClass.getTileType(centerX + width - bg.getBgX(),
+                centerY + height - bg.getBgY()) != 0) {
             return true;
         } else {
             return false;
@@ -228,11 +225,11 @@ public class Person {
             speedX = 0;
         }
     }
-    
-    public Image getCurrent(){
-    	return current;
+
+    public Image getCurrent() {
+        return current;
     }
-    
+
     public int getCenterX() {
         return centerX;
     }
@@ -264,14 +261,14 @@ public class Person {
     public void setSpeedY(int speedY) {
         this.speedY = speedY;
     }
-    
-    public Person enable(){
-    	this.isActive = true;
-    	return this;
+
+    public Person enable() {
+        this.isActive = true;
+        return this;
     }
-    
-    public void disable(){
-    	this.isActive = false;
+
+    public void disable() {
+        this.isActive = false;
     }
 
     public boolean isMovingUp() {
