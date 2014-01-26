@@ -41,7 +41,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 
     private Dialog dialog;
 
-    public static Image tilegrassTop, tilegrassBot, tilegrassLeft, tilegrassRight;
+    public static Image tileWall;
 
     //private Animation charAnim, char_backwardsAnim, char_leftAnim, char_rightAnim;
     
@@ -57,7 +57,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
     public void init() {
 
         setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-        setBackground(Color.BLACK);
+        setBackground(Color.WHITE);
         setFocusable(true);
         addKeyListener(this);
         Frame frame = (Frame) this.getParent().getParent();
@@ -108,7 +108,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 					    	 charImg.getSubimage( 46, 0, 14, 19 ), charImg.getSubimage( 60, 0, 14, 19 ),
 					    	 charImg.getSubimage( 74, 0, 14, 19 ), charImg.getSubimage( 88, 0, 14, 19 ),
 					    	 charImg.getSubimage( 102, 0, 14, 19 ), charImg.getSubimage( 116, 0, 14, 19 ), 
-					    	 true, 100, 377);
+					    	 true, 150, 100);
 		
 		grunt = new Person(charImg.getSubimage( 130, 20, 16, 19 ), charImg.getSubimage( 146, 20, 15, 19 ),
 		     	 		   charImg.getSubimage( 161, 20, 15, 19 ), charImg.getSubimage( 0, 20, 16, 19 ),
@@ -118,21 +118,18 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 					       charImg.getSubimage( 102, 20, 14, 19 ), charImg.getSubimage( 116, 20, 14, 19 ), 
 					       false, 100, 100);
 		
-        background = getImage(base, "data/background2.jpg");
+        background = getImage(base, "data/background.jpg");
         
         BufferedImage tileImg = null;
 		try {
-			tileImg = ImageIO.read(new File("data/tile.png"));
+			tileImg = ImageIO.read(new File("data/wall.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	     // The above line throws an checked IOException which must be caught.
         
-        tilegrassTop = tileImg.getSubimage( 0, 0, 40, 40 );
-        tilegrassBot = tileImg.getSubimage( 0, 80, 40, 40 );
-        tilegrassLeft = tileImg.getSubimage( 0, 40, 40, 40 );
-        tilegrassRight = tileImg.getSubimage( 40, 40, 40, 40 );
+        tileWall = tileImg;
     }
 
     @Override
@@ -141,7 +138,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 
         // Initialize Tiles
         try {
-            loadMap("data/map1.txt");
+            loadMap("data/map2.txt");
            
         } catch (IOException e) {
             e.printStackTrace();
