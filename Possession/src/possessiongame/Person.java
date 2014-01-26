@@ -1,12 +1,12 @@
 
 package possessiongame;
 
-import possessiongame.framework.Animation;
-
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+
+import possessiongame.framework.Animation;
 
 public class Person {
 
@@ -49,6 +49,8 @@ public class Person {
     public String outputMessage;
     private long ticks = 0;
     private int mIndex = 0;
+    
+    private ArrayList<Character> allowedTiles = new ArrayList<Character>();
 
     public Person(Image front, Image front2, Image front3,
             Image back, Image back2, Image back3,
@@ -61,7 +63,12 @@ public class Person {
         } else {
             dialog = null;
         }
-        
+      
+    	
+    	allowedTiles.add('a');
+    	allowedTiles.add(' ');
+    	allowedTiles.add('0');
+
         frontAnim = new Animation();
         frontAnim.addFrame(front, 75);
         frontAnim.addFrame(front2, 75);
@@ -180,20 +187,37 @@ public class Person {
     }
 
     private boolean checkCollision() {
+    	
         if (centerX < 0 || centerY < 0) {
             return true;
-        } else if (MainClass.getTileType(centerX - bg.getBgX(), centerY - bg.getBgY()) != 0) {
-            return true;
-        } else if (MainClass.getTileType(centerX - bg.getBgX(), centerY + height - bg.getBgY()) != 0) {
-            return true;
-        } else if (MainClass.getTileType(centerX + width - bg.getBgX(), centerY - bg.getBgY()) != 0) {
-            return true;
+        } else if (MainClass.getTileType(centerX - bg.getBgX(), centerY - bg.getBgY()) != '0') {
+        	if(this.allowedTile(MainClass.getTileType(centerX - bg.getBgX(), centerY - bg.getBgY()))){
+        		//return false;
+        	}else{
+        		return true;
+        	}
+        } else if (MainClass.getTileType(centerX - bg.getBgX(), centerY + height - bg.getBgY()) != '0') {
+        	if(this.allowedTile(MainClass.getTileType(centerX - bg.getBgX(), centerY + height - bg.getBgY()))){
+        		//return false;
+        	}else{
+        		return true;
+        	}
+        } else if (MainClass.getTileType(centerX + width - bg.getBgX(), centerY - bg.getBgY()) != '0') {
+        	if(this.allowedTile(MainClass.getTileType(centerX + width - bg.getBgX(), centerY - bg.getBgY()))){
+        		//return false;
+        	}else{
+        		return true;
+        	}
         } else if (MainClass.getTileType(centerX + width - bg.getBgX(),
-                centerY + height - bg.getBgY()) != 0) {
-            return true;
-        } else {
-            return false;
-        }
+                centerY + height - bg.getBgY()) != '0') {
+        	if(this.allowedTile(MainClass.getTileType(centerX + width - bg.getBgX(),
+                centerY + height - bg.getBgY()))){
+        		//return false;
+        	}else{
+        		return true;
+        	}
+        } 
+        return false;
     }
     
     private void displayInventory(Graphics g) {
@@ -280,14 +304,14 @@ public class Person {
     }
 
     public void startPossess(){
-    	canPossess = true;
+            canPossess = true;
     }
     public void stopPossess(){
-    	canPossess = false;
+            canPossess = false;
     }
     
     public Image getCurrent(){
-    	return current;
+            return current;
     }
 
     public int getCenterX() {
@@ -330,10 +354,10 @@ public class Person {
     }
     
     public void disable(){
-    	isActive = false;
-    	canPossess = false;
-    	speedY = 0;
-    	speedX = 0;
+            isActive = false;
+            canPossess = false;
+            speedY = 0;
+            speedX = 0;
     }
 
     public boolean isMovingUp() {
@@ -353,14 +377,27 @@ public class Person {
     }
  
     public boolean getPossess(){
-    	return canPossess;
+            return canPossess;
     }
     
     public int getRadius(){
-    	return radius;
+            return radius;
     }
     
     public boolean active(){
-    	return isActive;
+            return isActive;
+    }
+    
+    public boolean allowedTile(char tile){
+    	boolean allowed = false;
+    	for(int i = 0; i < allowedTiles.size(); i++){
+    		if(tile == allowedTiles.get(i)){
+    			System.out.println(allowedTiles.get(i));
+    			allowed = true;
+    			break;
+    		}
+    	}
+    	//System.out.println(allowed);
+    	return allowed;
     }
 }

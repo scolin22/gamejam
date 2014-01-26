@@ -1,4 +1,3 @@
-
 package possessiongame;
 
 import java.applet.Applet;
@@ -44,7 +43,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
     //private Dialog dialog;
 
     public static Image wall, doorV, doorH, deskHL, deskHR, deskHC, deskVT, deskVB, deskVC, chairL,
-            chairR, safe, cameraOR, cameraOL, cameraXR, cameraXL, computer;
+            chairR, safe, cameraOR, cameraOL, cameraXR, cameraXL, computer, garbage;
 
     // private Animation charAnim, char_backwardsAnim, char_leftAnim,
     // char_rightAnim;
@@ -116,22 +115,24 @@ public class MainClass extends Applet implements Runnable, KeyListener {
             e.printStackTrace();
         }
 
-        doorV = tileImg.getSubimage(100, 0, 25, 25);
-        doorH = tileImg.getSubimage(100, 25, 25, 25);
-        deskVT = tileImg.getSubimage(74, 96, 24, 25);
-        deskVB = tileImg.getSubimage(74, 71, 24, 25);
-        deskVC = tileImg.getSubimage(101, 71, 20, 25);
-        deskHL = tileImg.getSubimage(25, 25, 25, 24);
-        deskHR = tileImg.getSubimage(0, 25, 25, 24);
-        deskHC = tileImg.getSubimage(25, 0, 25, 20);
-        chairL = tileImg.getSubimage(2, 77, 9, 15);
-        chairR = tileImg.getSubimage(13, 77, 9, 15);
+        doorV = tileImg.getSubimage(100, 25, 25, 25); 
+        doorH = tileImg.getSubimage(25, 75, 25, 25);
+        deskVT = tileImg.getSubimage(75, 100, 25, 25);
+        deskVB = tileImg.getSubimage(75, 75, 25, 25);
+        deskVC = tileImg.getSubimage(100, 75, 25, 25);
+        deskHL = tileImg.getSubimage(25, 25, 25, 25);
+        deskHR = tileImg.getSubimage(0, 25, 25, 25);
+        deskHC = tileImg.getSubimage(25, 0, 25, 25);
+        chairL = tileImg.getSubimage(0, 75, 9, 15);
+        chairR = tileImg.getSubimage(13, 75, 9, 15);
         safe = tileImg.getSubimage(0, 50, 25, 25);
         cameraOR = tileImg.getSubimage(25, 50, 25, 20);
         cameraOL = tileImg.getSubimage(75, 50, 25, 20);
         cameraXR = tileImg.getSubimage(50, 50, 25, 20);
         cameraXL = tileImg.getSubimage(100, 50, 25, 20);
-        computer = tileImg.getSubimage(0, 0, 13, 25);
+        computer = tileImg.getSubimage(0, 0, 12, 12);
+        garbage = tileImg.getSubimage(0, 12, 12, 13);
+        //recycling = tileImg.getSubimage(13, 14, 12, 11);
     }
 
     private void initCharacters() {
@@ -420,14 +421,14 @@ public class MainClass extends Applet implements Runnable, KeyListener {
         return image;
     }
 
-    public static int getTileType(int x, int y) {
+    public static char getTileType(int x, int y) {
         x = x / Tile.TILE_SIZE;
         y = y / Tile.TILE_SIZE;
         if (x >= width || y >= height) {
-            return 1;
+            return '1';
         } else {
-            return tiles[y][x].getTileType();
+            return  tiles[y][x].getTileType();
         }
     }
-
+    
 }
