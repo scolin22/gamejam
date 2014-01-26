@@ -6,7 +6,7 @@ public class NPC {
 
 	private int maxHealth, currentHealth, power, speedX, centerX, centerY;
 	private Background bg = MainClass.getBg();
-	private Player player = MainClass.getPlayer();
+	private Person player = MainClass.getPlayer();
 
 	public Rectangle r = new Rectangle(0, 0, 0, 0);
 
@@ -16,14 +16,14 @@ public class NPC {
 		speedX = bg.getSpeedX() * 5;
 		r.setBounds(centerX - 25, centerY - 25, 50, 60);
 
-		if (r.intersects(Player.rect)) {
+		if (r.intersects(Person.rect)) {
 			checkCollision();
 		}
 
 	}
 
 	private void checkCollision() {
-		if (r.intersects(Player.rect)) {
+		if (r.intersects(Person.rect)) {
 			System.out.println("collision");
 			player.setSpeedX(0);
 

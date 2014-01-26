@@ -7,7 +7,7 @@ public class Background {
 	private int speedX;
 	private int speedY;
 	
-	private Player player = MainClass.getPlayer();
+	private Person player = MainClass.getPlayer();
 	
 	public Background(int x, int y) {
 		bgX = x;
