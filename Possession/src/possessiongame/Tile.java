@@ -11,6 +11,8 @@ public class Tile {
         private char type;
         public Image tileImage;
 
+        
+        
         private Person player = MainClass.getPlayer();
 
         private Background bg = MainClass.getBg();
@@ -74,7 +76,17 @@ public class Tile {
                 }
                 else if (type == 'r') {
                         tileImage = MainClass.computer;
-                } else {
+                }
+                else if (type == 'a'){
+                	
+                }
+                else if (type == 'e'){
+                	
+                }
+                else if (type == 's'){
+                	
+                }
+                else{
                         System.out.println(type);
                         type = 0;
                 }
