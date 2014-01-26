@@ -93,8 +93,11 @@ public class Person {
     public static Rectangle rect = new Rectangle(0, 0, 0, 0);
 
     public void update() {
-    	if( !isActive )
-    		return;
+    	if( !isActive ) {
+    		centerX += bg.getSpeedX();
+    	    centerY += bg.getSpeedY();
+    	    return;
+    	}
     	
     	centerX += speedX;
         if (checkCollision()) {
