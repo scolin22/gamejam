@@ -29,17 +29,18 @@ public class MainClass extends Applet implements Runnable, KeyListener {
     public final static int INVENTORY_Y = 500;
 
     // Relative Positioning of Speech Bubble to Player
-    public final static int speech_OffsetX = 20;
-    public final static int speech_OffsetY = -60;
-    public final static int speechtext_OffsetX = 10;
+    public final static int speech_OffsetX = 10;
+    public final static int speech_OffsetY = 0;
+    public final static int speechtext_OffsetX = -25;
     public final static int speechtext_OffsetY = -30;
 
     private static Person currentPerson;
     private ArrayList<Person> People;
     private Person player, security, employee1, employee2, secretary;
     private Image image, background, inventory;
+    public static Image dialog_image;
 
-    private Dialog dialog;
+    //private Dialog dialog;
 
     public static Image wall, doorV, doorH, deskHL, deskHR, deskHC, deskVT, deskVB, deskVC, chairL,
             chairR, safe, cameraOR, cameraOL, cameraXR, cameraXL, computer, garbage;
@@ -70,7 +71,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
             // TODO: handle exception
         }
 
-        dialog = new Dialog(getImage(base, "data/small_speech.jpg"));
+        //dialog = new Dialog(getImage(base, "data/small_speech.jpg"));
 
         bg = new Background(0, 0);
 
@@ -96,6 +97,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 
         background = getImage(base, "data/background.jpg");
         inventory = getImage(base, "data/inventory.png");
+        dialog_image = getImage(base, "data/small_speech.jpg");
 
         BufferedImage tileImg = null;
         try {
@@ -134,6 +136,9 @@ public class MainClass extends Applet implements Runnable, KeyListener {
     }
 
     private void initCharacters() {
+        
+        ArrayList<String> security_dialog;
+        
         BufferedImage charImg = null;
         try {
             charImg = ImageIO.read(new File("data/personSpriteSheet.png"));
@@ -149,7 +154,13 @@ public class MainClass extends Applet implements Runnable, KeyListener {
                 charImg.getSubimage(46, 0, 14, 19), charImg.getSubimage(60, 0, 14, 19),
                 charImg.getSubimage(74, 0, 14, 19), charImg.getSubimage(88, 0, 14, 19),
                 charImg.getSubimage(102, 0, 14, 19), charImg.getSubimage(116, 0, 14, 19),
-                true, 550, 300);
+                true, 550, 300, null);
+        
+        security_dialog = new ArrayList<String>();
+        security_dialog.add("I am a security guard.");
+        security_dialog.add("Good thing the camera is on.");
+        security_dialog.add("Otherwise, someone could steal money.");
+        security_dialog.add("From the safe.");
 
         security = new Person(charImg.getSubimage(130, 20, 16, 19), charImg.getSubimage(146, 20,
                 15, 19),
@@ -158,7 +169,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
                 charImg.getSubimage(46, 20, 14, 19), charImg.getSubimage(60, 20, 14, 19),
                 charImg.getSubimage(74, 20, 14, 19), charImg.getSubimage(88, 20, 14, 19),
                 charImg.getSubimage(102, 20, 14, 19), charImg.getSubimage(116, 20, 14, 19),
-                false, 275, 300);
+                false, 275, 300, security_dialog);
         
         People = new ArrayList<Person>();
         People.add(security);
@@ -311,15 +322,17 @@ public class MainClass extends Applet implements Runnable, KeyListener {
         g.drawImage(player.getCurrent(), player.getCenterX(),
                 player.getCenterY(), this);
 
-        outputDialog(dialog, g);
+        outputDialog(g, security);
 
     }
 
-    private void outputDialog(Dialog dialog, Graphics g) {
-        // g.drawImage(dialog.getDialog_background(), currentPerson.getCenterX()
-        // + speech_OffsetX, currentPerson.getCenterY() + speech_OffsetY, this);
-        // g.drawString(dialog.outputDialog(), currentPerson.getCenterX() +
-        // speechtext_OffsetX, currentPerson.getCenterY() + speechtext_OffsetY);
+    private void outputDialog(Graphics g, Person p) {
+        if (p.outputMessage != null) {
+            int y = p.getCenterY() + speech_OffsetY;
+            
+            g.drawString(p.outputMessage, p.getCenterX() + speechtext_OffsetX,
+                    y);
+        }
     }
 
     private void updateTiles() {
@@ -408,14 +421,14 @@ public class MainClass extends Applet implements Runnable, KeyListener {
         return image;
     }
 
-    public static int getTileType(int x, int y) {
+    public static char getTileType(int x, int y) {
         x = x / Tile.TILE_SIZE;
         y = y / Tile.TILE_SIZE;
         if (x >= width || y >= height) {
-            return 1;
+            return '1';
         } else {
-            return tiles[y][x].getTileType();
+            return  tiles[y][x].getTileType();
         }
     }
-
+    
 }

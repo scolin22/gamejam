@@ -78,6 +78,7 @@ public class Tile {
 		}else if( type == 'g' ){
 			tileImage = MainClass.garbage;
 		}else {
+			
 		}
 
 	}
@@ -104,7 +105,7 @@ public class Tile {
         return tileImage;
     }
     
-    public int getTileType() {
+    public char getTileType() {
         return type;
     }
 
