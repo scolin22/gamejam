@@ -26,7 +26,8 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 public class MainClass extends Applet implements Runnable, KeyListener {
 
     public final static int SCREEN_WIDTH = 800;
-    public final static int SCREEN_HEIGHT = 480;
+    public final static int SCREEN_HEIGHT = 570;
+    public final static int INVENTORY_Y = 500;
     
     //Relative Positioning of Speech Bubble to Player
     public final static int speech_OffsetX = 20;
@@ -38,7 +39,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
     private ArrayList<Person> People;
 	private Person trainer;
 	private Person grunt;
-    private Image image, background;
+    private Image image, background, inventory;
 
     private Dialog dialog;
 
@@ -120,6 +121,10 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 					       false, 100, 100);
 		
         background = getImage(base, "data/background.jpg");
+        inventory = getImage(base, "data/inventory.png");
+        if (inventory == null) {
+            System.out.println("wtf");
+        }
 
 		People = new ArrayList<Person>();
 		People.add( grunt );
@@ -274,8 +279,9 @@ public class MainClass extends Applet implements Runnable, KeyListener {
     public void paint(Graphics g) {
         
         g.drawImage(background, bg.getBgX(), bg.getBgY(), this);
+        g.drawImage(inventory, 0, INVENTORY_Y, this);
+        
         paintTiles(g);
-
         g.drawRect((int) grunt.rect.getX(), (int) grunt.rect.getY(),
                 (int) grunt.rect.getWidth(), (int) grunt.rect.getHeight());
         
