@@ -11,8 +11,8 @@ public class Person {
     // Constants are Here
     final int MOVESPEED = 2;
 
-    private int centerX = 100;
-    private int centerY = 377;
+    private int centerX;
+    private int centerY;
     private int width = 25;
     private int height = 35;
     final int offset = 60;
