@@ -7,7 +7,8 @@ public class Tile {
 	
     public static final int TILE_SIZE = 25;
 	
-	private int tileX, tileY, speedX, speedY, type;
+	private int tileX, tileY, speedX, speedY;
+	private char type;
 	public Image tileImage;
 
 	private Person player = MainClass.getPlayer();
@@ -15,35 +16,66 @@ public class Tile {
 	private Background bg = MainClass.getBg();
 	private Rectangle r;
 
-	public Tile(int x, int y, int typeInt) {
+	public Tile(int x, int y, char ch) {
 		tileX = x * TILE_SIZE;
 		tileY = y * TILE_SIZE;
 
-		type = typeInt;
+		type = ch;
 
 		r = new Rectangle();
 
-		if (type == 1) {
+		if (type == '1') {
 			tileImage = MainClass.wall;
 		}
-		else if (type == 2) {
-			tileImage = MainClass.door;
+		else if (type == '2') {
+			tileImage = MainClass.doorV;
 		}
-		else if (type == 3) {
-			tileImage = MainClass.desk;
+		else if (type == '3') {
+			tileImage = MainClass.doorH;
 		}
-		else if (type == 4) {
-			tileImage = MainClass.chair;
+		else if (type == '4') {
+			tileImage = MainClass.deskVT;
 		}
-		else if (type == 5) {
+		else if (type == '5') {
+			tileImage = MainClass.deskVB;
+		}
+		else if (type == '6') {
+			tileImage = MainClass.deskVC;
+		}
+		else if (type == '7') {
+			tileImage = MainClass.deskHL;
+		}
+		else if (type == '8') {
+			tileImage = MainClass.deskHR;
+		}
+		else if (type == '9') {
+			tileImage = MainClass.deskHC;
+		}
+		else if (type == 'z') {
+			tileImage = MainClass.chairL;
+		}
+		else if (type == 'y') {
+			tileImage = MainClass.chairR;
+		}
+		else if (type == 'x') {
 			tileImage = MainClass.safe;
 		}
-		else if (type == 6) {
-			tileImage = MainClass.camera;
+		else if (type == 'w') {
+			tileImage = MainClass.cameraOR;
 		}
-		else if (type == 7) {
+		else if (type == 'v') {
+			tileImage = MainClass.cameraOL;
+		}
+		else if (type == 'u') {
+			tileImage = MainClass.cameraXR;
+		}
+		else if (type == 't') {
+			tileImage = MainClass.cameraXR;
+		}
+		else if (type == 'r') {
 			tileImage = MainClass.computer;
 		} else {
+			System.out.println(type);
 			type = 0;
 		}
 

@@ -1,26 +1,39 @@
 ! # = Tile Legend 
 ! 1 = wall
-! 2 = door
-! 3 = desk
-! 4 = chair
-! 5 = safe
-! 6 = camera
-! 7 = computer
+! 2 = doorV
+! 3 = doorH
+! 4 = deskVT
+! 5 = deskVB
+! 6 = deskVC
+! 7 = deskHT
+! 8 = deskHR
+! 9 = deskHC
+! z = chairL
+! y = chairR
+! x = safe
+! w = cameraOR
+! v = cameraOL
+! u = cameraXR
+! t = cameraXL
+! r = computer
+! s = security only
+! e = employee only
+! a = security or employee only
 
 111111111111111111111111  
-1      61              1  
-15      2    4     4   1  
-1       1   333   333  1  
-111111111              1  
-        1              1  
-        1              1  
-        1        1111111  
-        1        1 4 4 1  
-        1       43     1  
-        1        3     2  
-        1              1  
-        1121111111111111  
-        1    1            
-        1    1            
-        1   71            
+1eeeeeev1aaaaaaaaaaaaaa1  
+1xeeeeee2aaaazaaaaayaaa1  
+1eeeeeee1aaa798aaa798aa1  
+111111111aaaaaaaaaaaaaa1  
+        1aaaaaaaaaaaaaa1  
+        1aaaaaaaaaaaaaa1  
+        1aaaaaaaa1111111  
+        1aaaaaaaa1 z z 1  
+        1aaaaaaaz4     1  
+        1aaaaaaaa5     2  
+        1aaaaaaaa      1  
+        1131111111111111  
+        1ssss1            
+        1ssss1            
+        1sssr1            
         111111            
