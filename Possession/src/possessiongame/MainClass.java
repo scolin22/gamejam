@@ -43,7 +43,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 
     private Dialog dialog;
 
-    public static Image wall, door, desk, chair, safe, camera, computer;
+    public static Image wall, doorV, doorH, deskHL, deskHR, deskHC, deskVT, deskVB, deskVC, chairL, chairR, safe, cameraOR, cameraOL, cameraXR, cameraXL, computer;
 
     //private Animation charAnim, char_backwardsAnim, char_leftAnim, char_rightAnim;
     
@@ -110,7 +110,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 					    	 charImg.getSubimage( 46, 0, 14, 19 ), charImg.getSubimage( 60, 0, 14, 19 ),
 					    	 charImg.getSubimage( 74, 0, 14, 19 ), charImg.getSubimage( 88, 0, 14, 19 ),
 					    	 charImg.getSubimage( 102, 0, 14, 19 ), charImg.getSubimage( 116, 0, 14, 19 ), 
-					    	 true, 150, 100);
+					    	 true, 550, 300);
 		
 		grunt = new Person(charImg.getSubimage( 130, 20, 16, 19 ), charImg.getSubimage( 146, 20, 15, 19 ),
 		     	 		   charImg.getSubimage( 161, 20, 15, 19 ), charImg.getSubimage( 0, 20, 16, 19 ),
@@ -118,7 +118,7 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 					       charImg.getSubimage( 46, 20, 14, 19 ), charImg.getSubimage( 60, 20, 14, 19 ),
 					       charImg.getSubimage( 74, 20, 14, 19 ), charImg.getSubimage( 88, 20, 14, 19 ),
 					       charImg.getSubimage( 102, 20, 14, 19 ), charImg.getSubimage( 116, 20, 14, 19 ), 
-					       false, 100, 100);
+					       false, 275, 300);
 		
         background = getImage(base, "data/background.jpg");
         inventory = getImage(base, "data/inventory.png");
@@ -130,25 +130,39 @@ public class MainClass extends Applet implements Runnable, KeyListener {
 		People.add( grunt );
 		People.add( trainer );
 		currentPerson = trainer;
-        
-        wall = readImage("data/wall.png");
-        door = readImage("data/wall.png");
-        desk = readImage("data/wall.png");
-        chair = readImage("data/wall.png");
-        safe = readImage("data/wall.png");
-        camera = readImage("data/wall.png");
-        computer = readImage("data/wall.png");
-    }
-    
-    public BufferedImage readImage(String fname) {
-    	BufferedImage tileImg = null;
+		
+		BufferedImage tileImg = null;
 		try {
-			tileImg = ImageIO.read(new File(fname));
+			tileImg = ImageIO.read(new File("data/wall.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return tileImg;
+		wall = tileImg;
+		
+		try {
+			tileImg = ImageIO.read(new File("data/ObjectSpriteSheet.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+        doorV = tileImg.getSubimage(100, 0, 25, 25);
+        doorH = tileImg.getSubimage(100, 25, 25, 25);
+        deskVT = tileImg.getSubimage(74, 96, 24, 25);
+        deskVB = tileImg.getSubimage(74, 71, 24, 25);
+        deskVC = tileImg.getSubimage(101, 71, 20, 25);
+        deskHL = tileImg.getSubimage(25, 25, 25, 24);
+        deskHR = tileImg.getSubimage(0, 25, 25, 24);
+        deskHC = tileImg.getSubimage(25, 0, 25, 20);
+        chairL = tileImg.getSubimage(2, 77, 9, 15);
+        chairR = tileImg.getSubimage(13, 77, 9, 15);
+        safe = tileImg.getSubimage(0, 50, 25, 25);
+        cameraOR = tileImg.getSubimage(25, 50, 25, 20);
+        cameraOL = tileImg.getSubimage(75, 50, 25, 20);
+        cameraXR = tileImg.getSubimage(50, 50, 25, 20);
+        cameraXL = tileImg.getSubimage(100, 50, 25, 20);
+        computer = tileImg.getSubimage(0, 0, 13, 25);
     }
 
     @Override
@@ -191,10 +205,10 @@ public class MainClass extends Applet implements Runnable, KeyListener {
             for (int i = 0; i < width; i++) {
                 if (i < line.length()) {
                     char ch = line.charAt(i);
-                    Tile t = new Tile(i, j, Character.getNumericValue(ch));
+                    Tile t = new Tile(i, j, ch);
                     tiles[j][i] = t;
                 } else {
-                    Tile t = new Tile(i, j, 0);
+                    Tile t = new Tile(i, j, '0');
                     tiles[j][i] = t;
                 }
 
@@ -282,14 +296,15 @@ public class MainClass extends Applet implements Runnable, KeyListener {
         g.drawImage(inventory, 0, INVENTORY_Y, this);
         
         paintTiles(g);
-        g.drawRect((int) grunt.rect.getX(), (int) grunt.rect.getY(),
-                (int) grunt.rect.getWidth(), (int) grunt.rect.getHeight());
+
+//        g.drawRect((int) grunt.rect.getX(), (int) grunt.rect.getY(),
+//                (int) grunt.rect.getWidth(), (int) grunt.rect.getHeight());
         
         g.drawImage(grunt.getCurrent(), grunt.getCenterX(),
         		grunt.getCenterY(), this);
         
-        g.drawRect((int) trainer.rect.getX(), (int) trainer.rect.getY(),
-                (int) trainer.rect.getWidth(), (int) trainer.rect.getHeight());
+//        g.drawRect((int) trainer.rect.getX(), (int) trainer.rect.getY(),
+//                (int) trainer.rect.getWidth(), (int) trainer.rect.getHeight());
         
         g.drawImage(trainer.getCurrent(), trainer.getCenterX(),
         		trainer.getCenterY(), this);
@@ -299,8 +314,8 @@ public class MainClass extends Applet implements Runnable, KeyListener {
     }
     
     private void outputDialog(Dialog dialog, Graphics g){
-    	g.drawImage(dialog.getDialog_background(), currentPerson.getCenterX() + speech_OffsetX, currentPerson.getCenterY() + speech_OffsetY, this);
-		g.drawString(dialog.outputDialog(), currentPerson.getCenterX() + speechtext_OffsetX, currentPerson.getCenterY() + speechtext_OffsetY);
+//    	g.drawImage(dialog.getDialog_background(), currentPerson.getCenterX() + speech_OffsetX, currentPerson.getCenterY() + speech_OffsetY, this);
+//		g.drawString(dialog.outputDialog(), currentPerson.getCenterX() + speechtext_OffsetX, currentPerson.getCenterY() + speechtext_OffsetY);
     }
     
     private void updateTiles() {
